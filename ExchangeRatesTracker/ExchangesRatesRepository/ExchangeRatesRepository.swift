@@ -17,9 +17,16 @@ public protocol ExchangeRatesRepository {
     func getExchangeRates() -> [ExchangeRate]
     
     /**
-     Track an exchange rate.
+     Track a valid new currency pair.
      - parameters:
          - pair: the currency pair to track
      */
     func track(pair: CurrencyPair)
+    
+    /**
+     Untrack a currency pair.
+     - parameters:
+         - pair: the currency pair to untrack
+     */
+    func untrack(pair: CurrencyPair)
 }

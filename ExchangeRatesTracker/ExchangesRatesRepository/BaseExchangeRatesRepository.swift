@@ -39,7 +39,7 @@ class BaseExchangeRatesRepository {
 }
 
 extension BaseExchangeRatesRepository: ExchangeRatesRepository {
-    
+   
     func getExchangeRates() -> [ExchangeRate] {
         return trackedPairs.map { (CurrencyPair) -> ExchangeRate in
             ExchangeRate.init(currencyPair: CurrencyPair, exchangeRate: nil)
@@ -57,4 +57,11 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
         
         trackedPairs.append(pair)
     }
+    
+    func untrack(pair: CurrencyPair) {
+        trackedPairs.removeAll { (CurrencyPair) -> Bool in
+            CurrencyPair == pair
+        }
+    }
+    
 }

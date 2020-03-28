@@ -42,13 +42,26 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
         XCTAssertEqual(0 , repo!.getExchangeRates().count, "An invalid pair is being tracked.")
     }
     
-    /*func testCanUntrackCurrency() {
-        repo!.trackExchange(exchange: EURCHF)
-        repo!.trackExchange(exchange: CHFEUR)
-        repo!.untrackExchange(exchange: CHFEUR)
+    func testCanUntrackCurrency() {
+        repo!.track(pair: EURCHF)
+        repo!.track(pair: CHFEUR)
+        repo!.untrack(pair: CHFEUR)
         
-        XCTAssertEqual(1 , repo!.getTrackedExchanges().count)
-    }*/
+        XCTAssertEqual(1 , repo!.getExchangeRates().count)
+    }
+    
+    func testUntrackEmptyListDoesNothing() {
+        repo!.untrack(pair: CHFEUR)
+        XCTAssertEqual(0 , repo!.getExchangeRates().count)
+    }
+    
+    func testUntrackMoreThanOneTimeDoesNothing() {
+        repo!.track(pair: EURCHF)
+        repo!.track(pair: CHFEUR)
+        repo!.untrack(pair: CHFEUR)
+        repo!.untrack(pair: CHFEUR)
+        XCTAssertEqual(1 , repo!.getExchangeRates().count)
+    }
 }
 
 // MARK: - Mocks
