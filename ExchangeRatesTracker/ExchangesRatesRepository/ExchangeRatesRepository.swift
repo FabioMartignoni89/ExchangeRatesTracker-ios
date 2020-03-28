@@ -14,12 +14,12 @@ public protocol ExchangeRatesRepository {
      Get  the tracked exchanges.
      - returns: an array of exchanges
      */
-    func getTrackedExchanges() -> [ExchangeRate]
+    func getExchangeRates() -> [ExchangeRate]
     
     /**
-     Track an exchange rate if not tracked yet.
+     Track an exchange rate.
      - parameters:
-         - exchange: the exchange rate to track
+         - pair: the currency pair to track
      */
-    func trackExchange(exchange: ExchangeRate)
+    func track(pair: CurrencyPair)
 }

@@ -12,35 +12,43 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
     
     var repo: ExchangeRatesRepository?
     
-    let EURCHF = ExchangeRate(currencyPair: CurrencyPair(baseCurrency: "EUR", counterCurrency: "CHF"), exchangeRate: 1.0)
-    let CHFEUR = ExchangeRate(currencyPair: CurrencyPair(baseCurrency: "CHF", counterCurrency: "EUR"), exchangeRate: 1.0)
+    let EURCHF = CurrencyPair(baseCurrency: "EUR", counterCurrency: "CHF")
+    let CHFEUR = CurrencyPair(baseCurrency: "CHF", counterCurrency: "EUR")
 
     override func setUp() {
         repo = BaseExchangeRatesRepository(currenciesDataSource: MockCurrenciesDataSource())
     }
     
     func testZeroExchangesInitiallyReturned() {
-        XCTAssertEqual(0 , repo!.getTrackedExchanges().count, "No exchanges should be returned initially.")
+        XCTAssertEqual(0 , repo!.getExchangeRates().count, "No exchanges should be tracked initially.")
     }
     
     func testCanTrackExchangeRates() {
-        repo!.trackExchange(exchange: EURCHF)
-        repo!.trackExchange(exchange: CHFEUR)
-        XCTAssertEqual(2 , repo!.getTrackedExchanges().count)
+        repo!.track(pair: EURCHF)
+        repo!.track(pair: CHFEUR)
+        XCTAssertEqual(2 , repo!.getExchangeRates().count)
     }
     
     func testAvoidTrackingDuplications() {
-        repo!.trackExchange(exchange: EURCHF)
-        repo!.trackExchange(exchange: EURCHF)
-        repo!.trackExchange(exchange: CHFEUR)
-        XCTAssertEqual(2 , repo!.getTrackedExchanges().count, "The same exchange rate is being tracked multiple times.")
+        repo!.track(pair: EURCHF)
+        repo!.track(pair: EURCHF)
+        repo!.track(pair: CHFEUR)
+        XCTAssertEqual(2 , repo!.getExchangeRates().count, "The same pair is being tracked multiple times.")
     }
     
     func testAvoidTrackingOfInvalidCurrencyPairs() {
-        repo!.trackExchange(exchange: ExchangeRate(currencyPair: CurrencyPair(baseCurrency: "CHF", counterCurrency: "CHF"), exchangeRate: 1.0))
-        repo!.trackExchange(exchange: ExchangeRate(currencyPair: CurrencyPair(baseCurrency: "", counterCurrency: "CHF"), exchangeRate: 1.0))
-        XCTAssertEqual(0 , repo!.getTrackedExchanges().count, "An invalid exchange rate is being tracked.")
+        repo!.track(pair: CurrencyPair(baseCurrency: "CHF", counterCurrency: "CHF"))
+        repo!.track(pair: CurrencyPair(baseCurrency: "", counterCurrency: "CHF"))
+        XCTAssertEqual(0 , repo!.getExchangeRates().count, "An invalid pair is being tracked.")
     }
+    
+    /*func testCanUntrackCurrency() {
+        repo!.trackExchange(exchange: EURCHF)
+        repo!.trackExchange(exchange: CHFEUR)
+        repo!.untrackExchange(exchange: CHFEUR)
+        
+        XCTAssertEqual(1 , repo!.getTrackedExchanges().count)
+    }*/
 }
 
 // MARK: - Mocks

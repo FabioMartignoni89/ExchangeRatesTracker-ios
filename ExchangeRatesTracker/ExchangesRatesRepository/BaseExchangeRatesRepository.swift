@@ -11,7 +11,7 @@ import Foundation
 class BaseExchangeRatesRepository {
     
     let currenciesDataSource: CurrenciesDataSource
-    private var trackedExchanges = [ExchangeRate]()
+    private var trackedPairs = [CurrencyPair]()
     
     init(currenciesDataSource: CurrenciesDataSource) {
         self.currenciesDataSource = currenciesDataSource
@@ -40,21 +40,21 @@ class BaseExchangeRatesRepository {
 
 extension BaseExchangeRatesRepository: ExchangeRatesRepository {
     
-    func getTrackedExchanges() -> [ExchangeRate] {
-        return trackedExchanges
+    func getExchangeRates() -> [ExchangeRate] {
+        return trackedPairs.map { (CurrencyPair) -> ExchangeRate in
+            ExchangeRate.init(currencyPair: CurrencyPair, exchangeRate: nil)
+        }
     }
     
-    func trackExchange(exchange: ExchangeRate) {
-        if trackedExchanges.contains(where: { (ExchangeRate) -> Bool in
-            exchange.currencyPair == ExchangeRate.currencyPair
-        }) {
+    func track(pair: CurrencyPair) {
+        if trackedPairs.contains(pair) {
             return
         }
         
-        if !validateCurrencyPair(pair: exchange.currencyPair) {
+        if !validateCurrencyPair(pair: pair) {
             return
         }
         
-        trackedExchanges.append(exchange)
+        trackedPairs.append(pair)
     }
 }
