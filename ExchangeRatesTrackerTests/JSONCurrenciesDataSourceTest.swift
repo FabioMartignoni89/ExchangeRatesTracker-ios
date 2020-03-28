@@ -39,7 +39,7 @@ class BundleJSONCurrenciesDataSourceTest: XCTestCase {
         }
     }
     
-    func testGetCurrencyThrowsIfJSONIsInvalid() {
+    func testThrowsIfJSONIsInvalid() {
         XCTAssertThrowsError(try JSONCurrenciesDataSource(json: "").getCurrencies())
     }
 }

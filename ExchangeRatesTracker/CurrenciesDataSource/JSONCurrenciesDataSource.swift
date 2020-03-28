@@ -8,24 +8,39 @@
 
 import Foundation
 
-public class JSONCurrenciesDataSource: CurrenciesDataSource {
+public class JSONCurrenciesDataSource {
     
     private let json: String
+    private var currenciesDTO: CurrenciesDTO?
     
     init(json: String) {
         self.json = json
     }
     
-    public func getCurrencies() throws -> [String] {
-        let currenciesDTO = try JSONDecoder().decode(CurrenciesDTO.self, from: Data(json.utf8))
+    private func getCurrenciesDTO() throws -> CurrenciesDTO {
         
-        return currenciesDTO.worldCurrencies.map { currency in
+        if currenciesDTO == nil { // lazy
+            currenciesDTO = try JSONDecoder().decode(CurrenciesDTO.self, from: Data(json.utf8))
+        }
+        
+        guard let dto = currenciesDTO else {
+            throw JSONDataIsNil(description: "Error decoding JSON: \(json)")
+        }
+        
+        return dto
+    }
+}
+
+extension JSONCurrenciesDataSource: CurrenciesDataSource {
+    
+    public func getCurrencies() throws -> [String] {
+        return try getCurrenciesDTO().worldCurrencies.map { currency in
             return currency.currency
         }
     }
 }
 
-// MARK: currencies JSON DTO
+// MARK: currencies JSON DTO mapping
 
 private struct CurrenciesDTO: Codable {
     let worldCurrencies: [WorldCurrency]
