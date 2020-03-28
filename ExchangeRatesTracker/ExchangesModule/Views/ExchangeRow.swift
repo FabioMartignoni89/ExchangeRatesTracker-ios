@@ -15,28 +15,28 @@ struct ExchangeRow: View {
     
     var body: some View {
         HStack {
-            Spacer()
             Text("\(viewModel.currencyRatioText)")
             Text("=")
             Text("\(viewModel.exchangeValue)").bold()
             Spacer()
         }
+        .padding(.horizontal)
     }
 }
 
 struct ExchangeRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ExchangeRow(viewModel: ExchangeRowViewModel(id: "EURUSD", currencyRatioText: "EUR/USD", exchangeValue: 1.1232))
+            ExchangeRow(viewModel: ExchangeRowViewModel(currencyRatioText: "EUR/USD", exchangeValue: 1.1232))
                 .previewLayout(.fixed(width: 200, height: 70))
-            ExchangeRow(viewModel: ExchangeRowViewModel(id: "EURUSD", currencyRatioText: "EUR/USD", exchangeValue: 1.1232))
+            ExchangeRow(viewModel: ExchangeRowViewModel(currencyRatioText: "EUR/USD", exchangeValue: 1.1232))
                 .previewLayout(.fixed(width: 500, height: 70))
         }
     }
 }
 
 struct ExchangeRowViewModel: Identifiable {
-    var id: String
+    var id = UUID()
     let currencyRatioText: String
     let exchangeValue: Double
 }

@@ -7,10 +7,11 @@
 //
 
 import SwiftUI
+import Combine
 
 public struct ExchangesView: View {
-    
-    var exchanges = [ExchangeRowViewModel](repeating: ExchangeRowViewModel(id: "EURUSD", currencyRatioText: "EUR/USD", exchangeValue: 1.1232), count: 30)
+        
+    var exchanges = [ExchangeRowViewModel](repeating: ExchangeRowViewModel(currencyRatioText: "EUR/USD", exchangeValue: 1.1232), count: 30)
     
     public var body: some View {
         NavigationView() {
