@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-var test = [ExchangeRowPresentationModel]()
 
 struct ExchangeRow: View {
     
