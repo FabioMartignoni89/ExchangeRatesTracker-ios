@@ -26,7 +26,7 @@ public protocol ExchangeRatesRepository {
     /**
      Untrack a currency pair.
      - parameters:
-         - pair: the currency pair to untrack
+         - pair: the currency pair to track
      */
     func untrack(pair: CurrencyPair)
 }

@@ -7,17 +7,17 @@
 //
 
 import SwiftUI
-var test = [ExchangeRowViewModel]()
+var test = [ExchangeRowPresentationModel]()
 
 struct ExchangeRow: View {
     
-    var viewModel: ExchangeRowViewModel
+    var presentationModel: ExchangeRowPresentationModel
     
     var body: some View {
         HStack {
-            Text("\(viewModel.currencyRatioText)")
+            Text("\(presentationModel.currencyRatioText)")
             Text("=")
-            Text("\(viewModel.exchangeValue)").bold()
+            Text("\(presentationModel.exchangeValue)").bold()
             Spacer()
         }
         .padding(.horizontal)
@@ -27,16 +27,16 @@ struct ExchangeRow: View {
 struct ExchangeRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ExchangeRow(viewModel: ExchangeRowViewModel(currencyRatioText: "EUR/USD", exchangeValue: 1.1232))
+            ExchangeRow(presentationModel: ExchangeRowPresentationModel(currencyRatioText: "EUR/USD", exchangeValue: "1.1232"))
                 .previewLayout(.fixed(width: 200, height: 70))
-            ExchangeRow(viewModel: ExchangeRowViewModel(currencyRatioText: "EUR/USD", exchangeValue: 1.1232))
+            ExchangeRow(presentationModel: ExchangeRowPresentationModel(currencyRatioText: "EUR/USD", exchangeValue: "1.1232"))
                 .previewLayout(.fixed(width: 500, height: 70))
         }
     }
 }
 
-struct ExchangeRowViewModel: Identifiable {
+struct ExchangeRowPresentationModel: Identifiable {
     var id = UUID()
     let currencyRatioText: String
-    let exchangeValue: Double
+    let exchangeValue: String
 }
