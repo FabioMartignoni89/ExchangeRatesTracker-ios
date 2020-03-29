@@ -38,12 +38,16 @@ class BaseExchangeRatesRepository {
     
 }
 
-extension BaseExchangeRatesRepository: ExchangeRatesRepository {
+extension BaseExchangeRatesRepository: ExchangeRatesRepository {    
    
     func getExchangeRates() -> [ExchangeRate] {
         return trackedPairs.map { (CurrencyPair) -> ExchangeRate in
             ExchangeRate.init(currencyPair: CurrencyPair, exchangeRate: nil)
         }
+    }
+    
+    func getCurrencies() throws -> [String] {
+        return try currenciesDataSource.getCurrencies()
     }
     
     func track(pair: CurrencyPair) {

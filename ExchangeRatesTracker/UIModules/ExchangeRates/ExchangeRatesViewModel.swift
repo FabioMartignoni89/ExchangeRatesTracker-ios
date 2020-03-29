@@ -14,7 +14,7 @@ protocol ExchangeRatesViewModel {
     var exchangeRates: [ExchangeRate] { get }
     
     // view events
-    func onViewReady()
+    func addButtonPressed()
 }
 
 final class BaseExchangeRatesViewModel: ObservableObject {
@@ -31,7 +31,7 @@ final class BaseExchangeRatesViewModel: ObservableObject {
 
 extension BaseExchangeRatesViewModel: ExchangeRatesViewModel {
     
-    func onViewReady() {
+    func addButtonPressed() {
 
     }
 }

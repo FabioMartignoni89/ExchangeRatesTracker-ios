@@ -17,6 +17,12 @@ public protocol ExchangeRatesRepository {
     func getExchangeRates() -> [ExchangeRate]
     
     /**
+     Get  the available currencies.
+     - returns: an array of currency codes
+     */
+    func getCurrencies() throws -> [String]
+    
+    /**
      Track a valid new currency pair.
      - parameters:
          - pair: the currency pair to track

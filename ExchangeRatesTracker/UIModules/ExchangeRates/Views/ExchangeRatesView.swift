@@ -28,7 +28,7 @@ public struct ExchangeRatesView: View {
             }
             .navigationBarTitle("Exchange rates")
             .navigationBarItems(trailing: Button(action: {
-                //TODO: implement add exchange action
+                self.viewModel.addButtonPressed()
             }) {
                 Text("Add")
             })
