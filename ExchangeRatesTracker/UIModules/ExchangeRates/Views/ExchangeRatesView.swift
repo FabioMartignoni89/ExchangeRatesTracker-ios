@@ -11,10 +11,12 @@ import Combine
 
 public struct ExchangeRatesView: View {
     @ObservedObject var viewModel: BaseExchangeRatesViewModel
+    let viewProvider: ViewProvider
     @State private var isNexExchangeRateViewPresented = false
 
-    init(viewModel: BaseExchangeRatesViewModel) {
+    init(viewModel: BaseExchangeRatesViewModel, viewProvider: ViewProvider) {
         self.viewModel = viewModel
+        self.viewProvider = viewProvider
     }
     
     public var body: some View {
@@ -34,9 +36,9 @@ public struct ExchangeRatesView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(isPresented: $isNexExchangeRateViewPresented, onDismiss: {
-            //self.viewModel... update list
+            self.viewModel.fetchExchanges()
         }) {
-            NewExchangeRateBuilder.build()
+            self.viewProvider.provideNewExchangeRate()
         }
         .onAppear {
             //stop ask 4 updates..
@@ -50,6 +52,7 @@ public struct ExchangeRatesView: View {
            self.isNexExchangeRateViewPresented.toggle()
         }) {
             Text("Add")
+            //Image(systemName: "plus")
         }
     }
     
@@ -66,7 +69,7 @@ public struct ExchangeRatesView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["iPhone XS Max", "iPad Pro (9.7-inch)"], id: \.self) { deviceName in
-            ExchangeRatesView(viewModel: getPreviewViewModel())
+            ExchangeRatesView(viewModel: getPreviewViewModel(), viewProvider: BaseViewProvider())
                 .previewDevice(PreviewDevice(rawValue: deviceName))
                 .previewDisplayName(deviceName)
         }

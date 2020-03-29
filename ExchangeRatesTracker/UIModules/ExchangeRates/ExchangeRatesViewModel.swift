@@ -10,11 +10,8 @@ import Foundation
 import Combine
 
 protocol ExchangeRatesViewModel {
-    // observables
     var exchangeRates: [ExchangeRate] { get }
-    
-    // view events
-    func addButtonPressed()
+    func fetchExchanges()
 }
 
 final class BaseExchangeRatesViewModel: ObservableObject {
@@ -24,14 +21,12 @@ final class BaseExchangeRatesViewModel: ObservableObject {
     
     init(repository: ExchangeRatesRepository) {
         self.repository = repository
-        exchangeRates.append(ExchangeRate(currencyPair: CurrencyPair(baseCurrency: "EUR", counterCurrency: "USD"), exchangeRate: 1.23))
-        exchangeRates.append(ExchangeRate(currencyPair: CurrencyPair(baseCurrency: "CHF", counterCurrency: "USD"), exchangeRate: 1.71))
+        fetchExchanges()
     }
 }
 
 extension BaseExchangeRatesViewModel: ExchangeRatesViewModel {
-    
-    func addButtonPressed() {
-
+    func fetchExchanges() {
+        exchangeRates = repository.getExchangeRates()
     }
 }
