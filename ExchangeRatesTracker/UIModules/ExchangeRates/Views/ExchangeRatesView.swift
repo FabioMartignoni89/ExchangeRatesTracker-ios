@@ -28,6 +28,7 @@ public struct ExchangeRatesView: View {
                     })) { exchange in
                         ExchangeRow(presentationModel: exchange)
                     }
+                    .onDelete(perform: delete)
                 }
             }
             .listStyle(GroupedListStyle())
@@ -43,6 +44,14 @@ public struct ExchangeRatesView: View {
         .onAppear {
             //stop ask 4 updates..
         }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        guard let index = offsets.first else {
+            return
+        }
+        let exchange = self.viewModel.exchangeRates.remove(at: index)
+        self.viewModel.untrackExchangeRate(exchange: exchange)
     }
     
     // MARK: - sub views

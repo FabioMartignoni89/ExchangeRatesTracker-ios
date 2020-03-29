@@ -60,6 +60,8 @@
 		E55B72992430F3B100AE7EC3 /* invalidCurrencies-test.json in Resources */ = {isa = PBXBuildFile; fileRef = E55B72972430F32D00AE7EC3 /* invalidCurrencies-test.json */; };
 		E55B729A2430F4CC00AE7EC3 /* validCurrencies-test.json in Resources */ = {isa = PBXBuildFile; fileRef = E55B72962430F32900AE7EC3 /* validCurrencies-test.json */; };
 		E55B729B2430F4CC00AE7EC3 /* invalidCurrencies-test.json in Resources */ = {isa = PBXBuildFile; fileRef = E55B72972430F32D00AE7EC3 /* invalidCurrencies-test.json */; };
+		E55B729F24311D0F00AE7EC3 /* ExchangeRatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51BEF54242E653800B4BE65 /* ExchangeRatesView.swift */; };
+		E55B72A024311D2B00AE7EC3 /* ExchangeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5383E40242F41FA00226B61 /* ExchangeRow.swift */; };
 		E56BD0D5243002EC0015869B /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */; };
 		E56BD0D624308C050015869B /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */; };
 		E56BD0D824308F670015869B /* MockExchangeRatesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D724308F670015869B /* MockExchangeRatesRepository.swift */; };
@@ -470,6 +472,7 @@
 			files = (
 				E51BEF8C242E789F00B4BE65 /* BundleCurrenciesDataSourceTest.swift in Sources */,
 				E55B72942430D8A400AE7EC3 /* Bundle.swift in Sources */,
+				E55B72A024311D2B00AE7EC3 /* ExchangeRow.swift in Sources */,
 				E5383E51242FB70E00226B61 /* ExchangeRatesRepository.swift in Sources */,
 				E5383E50242FB54F00226B61 /* BaseExchangeRatesRepositoryTests.swift in Sources */,
 				E55B72892430D21900AE7EC3 /* ViewProvider.swift in Sources */,
@@ -483,6 +486,7 @@
 				E55B72912430D76000AE7EC3 /* Configs.swift in Sources */,
 				E5383E57242FCB6B00226B61 /* CurrencyPair.swift in Sources */,
 				E51BEF83242E72D900B4BE65 /* CurrenciesDataSource.swift in Sources */,
+				E55B729F24311D0F00AE7EC3 /* ExchangeRatesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

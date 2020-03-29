@@ -12,6 +12,7 @@ import Combine
 protocol ExchangeRatesViewModel {
     var exchangeRates: [ExchangeRate] { get }
     func fetchExchanges()
+    func untrackExchangeRate(exchange: ExchangeRate)
 }
 
 final class BaseExchangeRatesViewModel: ObservableObject {
@@ -28,5 +29,10 @@ final class BaseExchangeRatesViewModel: ObservableObject {
 extension BaseExchangeRatesViewModel: ExchangeRatesViewModel {
     func fetchExchanges() {
         exchangeRates = repository.getExchangeRates()
+    }
+    
+    func untrackExchangeRate(exchange: ExchangeRate) {
+        repository.untrack(pair: exchange.currencyPair)
+        fetchExchanges()
     }
 }
