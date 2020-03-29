@@ -26,7 +26,7 @@ final class BaseNewExchangeRateViewModel: ObservableObject {
         }
         catch {
             print(error)
-            self.currencies = [String]()
+            self.currencies = ["-"]
             // TODO: show error message
         }
     }

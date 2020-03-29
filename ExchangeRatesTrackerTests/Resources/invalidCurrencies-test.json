@@ -1,0 +1,10 @@
+{
+"world_currencies": [
+{"currency": "GBP", "city": {"name": "London", "lat": 51.509865, "lon": -0.118092}},
+{"currency": "EUR", "city": {"name": "Bruxelles", "lat": 50.850340, "lon": 4.351710}},
+{{"currency": "USD", "city": {"name": "Washington D.C.", "lat": 38.89511, "lon": -77.03637}},
+{"currency": "RUB", "city": {"name": "Moscow", "lat": 55.751244, "lon": 37.618423}},
+{"currency": "CHF", "city": {"name": "Bern", "lat": 46.94809, "lon": 7.44744}},
+{"currency": "JPY", "city": {"name": "Tokyo", "lat": 35.652832, "lon": 139.839478}}
+]
+}

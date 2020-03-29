@@ -10,19 +10,18 @@ import Foundation
 
 extension Bundle {
     
-    func loadJSON(fileName: String) throws -> String {
+    func loadJSON<DTO>(type: DTO.Type, fileName: String) throws -> DTO where DTO: Decodable {
         do {
             if let path = Bundle.main.path(forResource: fileName, ofType: "json") {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                let json = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                return "\(json)"
+                return try JSONDecoder().decode(DTO.self, from: data)
             }
             else {
                 throw InvalidJSONError.init(description: "File '\(fileName)' not found in bundle.")
             }
         }
         catch {
-            throw InvalidJSONError.init(description: "Error reading JSON '\(fileName)' from bundle: \(error)")
+            throw InvalidJSONError.init(description: "Error reading/decoding JSON file '\(fileName)' from bundle: \(error)")
         }
     }
     

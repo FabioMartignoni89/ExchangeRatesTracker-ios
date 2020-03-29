@@ -10,31 +10,50 @@ import SwiftUI
 import Combine
 
 public struct ExchangeRatesView: View {
-
     @ObservedObject var viewModel: BaseExchangeRatesViewModel
-    
+    @State private var isNexExchangeRateViewPresented = false
+
     init(viewModel: BaseExchangeRatesViewModel) {
         self.viewModel = viewModel
     }
     
     public var body: some View {
         NavigationView() {
-            List(viewModel.exchangeRates.map({ (ExchangeRate) -> ExchangeRowPresentationModel in
-                convert(exchange: ExchangeRate)
-            })) { exchange in
-                //NavigationLink(destination: ...DetailView()) {
-                ExchangeRow(presentationModel: exchange)
-                //}
+            List() {
+                Section() {
+                    ForEach(viewModel.exchangeRates.map({ (ExchangeRate) -> ExchangeRowPresentationModel in
+                        convert(exchange: ExchangeRate)
+                    })) { exchange in
+                        ExchangeRow(presentationModel: exchange)
+                    }
+                }
             }
+            .listStyle(GroupedListStyle())
             .navigationBarTitle("Exchange rates")
-            .navigationBarItems(trailing: Button(action: {
-                self.viewModel.addButtonPressed()
-            }) {
-                Text("Add")
-            })
+            .navigationBarItems(trailing: addButton)
         }
         .navigationViewStyle(StackNavigationViewStyle())
+        .sheet(isPresented: $isNexExchangeRateViewPresented, onDismiss: {
+            //self.viewModel... update list
+        }) {
+            NewExchangeRateBuilder.build()
+        }
+        .onAppear {
+            //stop ask 4 updates..
+        }
     }
+    
+    // MARK: - sub views
+    
+    private var addButton: some View {
+        Button(action: {
+           self.isNexExchangeRateViewPresented.toggle()
+        }) {
+            Text("Add")
+        }
+    }
+    
+    // MARK: - utils
     
     private func convert(exchange: ExchangeRate) -> ExchangeRowPresentationModel {
         let pair = exchange.currencyPair
@@ -46,7 +65,6 @@ public struct ExchangeRatesView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        
         ForEach(["iPhone XS Max", "iPad Pro (9.7-inch)"], id: \.self) { deviceName in
             ExchangeRatesView(viewModel: getPreviewViewModel())
                 .previewDevice(PreviewDevice(rawValue: deviceName))

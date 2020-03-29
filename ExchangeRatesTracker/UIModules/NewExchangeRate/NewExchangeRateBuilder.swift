@@ -1,5 +1,5 @@
 //
-//  ExchangeRatesBuilder.swift
+//  NewExchangeRateBuilder.swift
 //  ExchangeRatesTracker
 //
 //  Created by Fabio Martignoni on 29/03/2020.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-class ExchangeRatesBuilder {
+class NewExchangeRateBuilder {
         
-    class func build() -> ExchangeRatesView {
+    class func build() -> NewExchangeRateView {
         let currenciesDataSource = BundleCurrenciesDataSource(fileName: Configs.CURRENCIES_FILE_NAME)
         let repository = BaseExchangeRatesRepository(currenciesDataSource: currenciesDataSource)
-        let viewModel = BaseExchangeRatesViewModel(repository: repository)
-        let contentView = ExchangeRatesView(viewModel: viewModel)
+        let viewModel = BaseNewExchangeRateViewModel(repository: repository)
+        let contentView = NewExchangeRateView(viewModel: viewModel)
 
         return contentView
     }
