@@ -72,6 +72,9 @@
 		E55B72B0243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */; };
 		E55B72B1243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */; };
 		E55B72B2243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */; };
+		E55B72B524329E4F00AE7EC3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E55B72B424329E4F00AE7EC3 /* Localizable.strings */; };
+		E55B72B624329E4F00AE7EC3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E55B72B424329E4F00AE7EC3 /* Localizable.strings */; };
+		E55B72B724329E4F00AE7EC3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E55B72B424329E4F00AE7EC3 /* Localizable.strings */; };
 		E56BD0D5243002EC0015869B /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */; };
 		E56BD0D624308C050015869B /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */; };
 		E56BD0D824308F670015869B /* MockExchangeRatesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D724308F670015869B /* MockExchangeRatesRepository.swift */; };
@@ -129,6 +132,7 @@
 		E55B72A6243235E000AE7EC3 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		E55B72A8243238B600AE7EC3 /* UserDefaultsExchangeRatesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExchangeRatesDataSourceTests.swift; sourceTree = "<group>"; };
 		E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExchangeRatesPersistenceService.swift; sourceTree = "<group>"; };
+		E55B72B424329E4F00AE7EC3 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesViewModel.swift; sourceTree = "<group>"; };
 		E56BD0D724308F670015869B /* MockExchangeRatesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExchangeRatesRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -238,6 +242,7 @@
 		E51BEF8D242E795E00B4BE65 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E55B72B424329E4F00AE7EC3 /* Localizable.strings */,
 				E51BEF8E242E79B100B4BE65 /* currencies.json */,
 			);
 			path = Resources;
@@ -443,6 +448,7 @@
 				E55B729A2430F4CC00AE7EC3 /* validCurrencies-test.json in Resources */,
 				E51BEF5D242E653D00B4BE65 /* LaunchScreen.storyboard in Resources */,
 				E55B729B2430F4CC00AE7EC3 /* invalidCurrencies-test.json in Resources */,
+				E55B72B524329E4F00AE7EC3 /* Localizable.strings in Resources */,
 				E51BEF5A242E653D00B4BE65 /* Preview Assets.xcassets in Resources */,
 				E51BEF8F242E79B100B4BE65 /* currencies.json in Resources */,
 				E51BEF57242E653D00B4BE65 /* Assets.xcassets in Resources */,
@@ -454,6 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E55B72992430F3B100AE7EC3 /* invalidCurrencies-test.json in Resources */,
+				E55B72B624329E4F00AE7EC3 /* Localizable.strings in Resources */,
 				E55B72982430F3B100AE7EC3 /* validCurrencies-test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,6 +469,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E55B72B724329E4F00AE7EC3 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

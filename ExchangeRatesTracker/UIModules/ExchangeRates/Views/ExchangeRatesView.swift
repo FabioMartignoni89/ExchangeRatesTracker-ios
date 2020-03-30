@@ -32,7 +32,7 @@ public struct ExchangeRatesView: View {
                 }
             }
             .listStyle(GroupedListStyle())
-            .navigationBarTitle("Exchange rates")
+            .navigationBarTitle(NSLocalizedString("exchange_rates", comment: ""))
             .navigationBarItems(trailing: addButton)
         }
         .navigationViewStyle(StackNavigationViewStyle())
@@ -60,7 +60,7 @@ public struct ExchangeRatesView: View {
         Button(action: {
            self.isNexExchangeRateViewPresented.toggle()
         }) {
-            Text("Add")
+            Text(NSLocalizedString("add_button", comment: ""))
             //Image(systemName: "plus")
         }
     }

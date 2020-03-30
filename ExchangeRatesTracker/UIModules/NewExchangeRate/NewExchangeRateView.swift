@@ -21,7 +21,7 @@ struct NewExchangeRateView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Spacer()
-            Text("Select currencies")
+            Text(NSLocalizedString("select_currencies", comment: ""))
                 .font(.title)
             self.currencyPickersView
             HStack {
@@ -39,8 +39,8 @@ struct NewExchangeRateView: View {
             HStack(spacing: 0) {
                 Spacer()
                 VStack {
-                    Text("Base")
-                    Picker(selection: self.$selectedBaseCurrency, label: Text("Base")) {
+                    Text(NSLocalizedString("base_currency", comment: ""))
+                    Picker(selection: self.$selectedBaseCurrency, label: Text("")) {
                         ForEach(0 ..< self.viewModel.currencies.count) {
                             Text(self.viewModel.currencies[$0])
                         }
@@ -51,8 +51,8 @@ struct NewExchangeRateView: View {
                 }
                 Spacer()
                 VStack {
-                    Text("Counter")
-                    Picker(selection: self.$selectedCounterCurrency, label: Text("Counter")) {
+                    Text(NSLocalizedString("counter_currency", comment: ""))
+                    Picker(selection: self.$selectedCounterCurrency, label: Text("")) {
                         ForEach(0 ..< self.viewModel.currencies.count) {
                             Text(self.viewModel.currencies[$0])
                         }
@@ -74,7 +74,7 @@ struct NewExchangeRateView: View {
             
             self.presentationMode.wrappedValue.dismiss()
         }) {
-            Text("Confirm")
+            Text(NSLocalizedString("confirm_button", comment: ""))
         }
     }
 }

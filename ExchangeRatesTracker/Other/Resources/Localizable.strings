@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  ExchangeRatesTracker
+
+  Created by Fabio Martignoni on 30/03/2020.
+  Copyright © 2020 fabiomartignoni. All rights reserved.
+*/
+
+"exchange_rates" = "Exchange rates";
+"add_button" = "Add";
+"confirm_button" = "Confirm";
+"select_currencies" = "Choose currency pair";
+"base_currency" = "Base";
+"counter_currency" = "Counter";
