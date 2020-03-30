@@ -25,14 +25,16 @@ public protocol ExchangeRatesRepository {
     /**
      Track a valid new currency pair.
      - parameters:
-         - pair: the currency pair to track
+        - base: the base currency
+        - counter: the counter currency
      */
-    func track(pair: CurrencyPair)
+    func track(base: String, counter: String)
     
     /**
      Untrack a currency pair.
      - parameters:
-         - pair: the currency pair to track
+         - base: the base currency
+         - counter: the counter currency
      */
-    func untrack(pair: CurrencyPair)
+    func untrack(base: String, counter: String)
 }

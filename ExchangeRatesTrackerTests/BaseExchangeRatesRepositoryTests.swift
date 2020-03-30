@@ -29,42 +29,42 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
     }
     
     func testCanTrackExchangeRates() {
-        repo!.track(pair: EURCHF)
-        repo!.track(pair: CHFEUR)
+        repo!.track(base: "EUR", counter: "CHF")
+        repo!.track(base: "CHF", counter: "EUR")
         XCTAssertEqual(2 , repo!.getExchangeRates().count)
     }
     
     func testAvoidTrackingDuplications() {
-        repo!.track(pair: EURCHF)
-        repo!.track(pair: EURCHF)
-        repo!.track(pair: CHFEUR)
+        repo!.track(base: "EUR", counter: "CHF")
+        repo!.track(base: "EUR", counter: "CHF")
+        repo!.track(base: "CHF", counter: "EUR")
         XCTAssertEqual(2 , repo!.getExchangeRates().count, "The same pair is being tracked multiple times.")
     }
     
     func testAvoidTrackingOfInvalidCurrencyPairs() {
-        repo!.track(pair: CurrencyPair(baseCurrency: "CHF", counterCurrency: "CHF"))
-        repo!.track(pair: CurrencyPair(baseCurrency: "", counterCurrency: "CHF"))
+        repo!.track(base: "CHF", counter: "CHF")
+        repo!.track(base: "", counter: "CHF")
         XCTAssertEqual(0 , repo!.getExchangeRates().count, "An invalid pair is being tracked.")
     }
     
     func testCanUntrackCurrency() {
-        repo!.track(pair: EURCHF)
-        repo!.track(pair: CHFEUR)
-        repo!.untrack(pair: CHFEUR)
+        repo!.track(base: "EUR", counter: "CHF")
+        repo!.track(base: "CHF", counter: "EUR")
+        repo!.untrack(base: "CHF", counter: "EUR")
         
         XCTAssertEqual(1 , repo!.getExchangeRates().count)
     }
     
     func testUntrackEmptyListDoesNothing() {
-        repo!.untrack(pair: CHFEUR)
+        repo!.untrack(base: "CHF", counter: "EUR")
         XCTAssertEqual(0 , repo!.getExchangeRates().count)
     }
     
     func testUntrackMoreThanOneTimeDoesNothing() {
-        repo!.track(pair: EURCHF)
-        repo!.track(pair: CHFEUR)
-        repo!.untrack(pair: CHFEUR)
-        repo!.untrack(pair: CHFEUR)
+        repo!.track(base: "EUR", counter: "CHF")
+        repo!.track(base: "CHF", counter: "EUR")
+        repo!.untrack(base: "CHF", counter: "EUR")
+        repo!.untrack(base: "CHF", counter: "EUR")
         XCTAssertEqual(1 , repo!.getExchangeRates().count)
     }
     

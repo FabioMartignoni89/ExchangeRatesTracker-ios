@@ -20,26 +20,12 @@ final class BaseNewExchangeRateViewModel: ObservableObject {
     
     init(repository: ExchangeRatesRepository) {
         self.repository = repository
-        
-        do {
-            self.currencies = try repository.getCurrencies()
-        }
-        catch {
-            print(error)
-            self.currencies = ["-"]
-            // TODO: show error message
-        }
+        self.currencies = repository.getCurrencies()        
     }
 }
 
 extension BaseNewExchangeRateViewModel: NewExchangeRateViewModel {
     func trackNewExchangeRate(baseCurrency: String, counterCurrency: String) {
-        let newPair = CurrencyPair(baseCurrency: baseCurrency, counterCurrency: counterCurrency)
-        do {
-            try  repository.track(pair: newPair)
-        }
-        catch {
-            print(error.localizedDescription) //TODO: user error message
-        }
+        repository.track(base: baseCurrency, counter: counterCurrency)
     }
 }

@@ -9,6 +9,7 @@
 import Foundation
 
 public struct ExchangeRate: Equatable {
-    let currencyPair: CurrencyPair
+    let baseCurrency: String
+    let counterCurrency: String
     let exchangeRate: Double?
 }

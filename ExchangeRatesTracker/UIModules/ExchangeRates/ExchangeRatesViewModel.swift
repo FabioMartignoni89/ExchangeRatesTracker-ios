@@ -32,12 +32,7 @@ extension BaseExchangeRatesViewModel: ExchangeRatesViewModel {
     }
     
     func untrackExchangeRate(exchange: ExchangeRate) {
-        do {
-            try repository.untrack(pair: exchange.currencyPair)
-        }
-        catch {
-            print(error.localizedDescription) //TODO: user error message
-        }
+        repository.untrack(base: exchange.baseCurrency, counter: exchange.counterCurrency)
         fetchExchanges()
     }
 }

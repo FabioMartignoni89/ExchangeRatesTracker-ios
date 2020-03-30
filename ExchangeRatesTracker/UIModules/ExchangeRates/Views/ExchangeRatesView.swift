@@ -68,8 +68,7 @@ public struct ExchangeRatesView: View {
     // MARK: - utils
     
     private func convert(exchange: ExchangeRate) -> ExchangeRowPresentationModel {
-        let pair = exchange.currencyPair
-        let ratioText = "\(pair.baseCurrency)/\(pair.counterCurrency)"
+        let ratioText = "\(exchange.baseCurrency)/\(exchange.counterCurrency)"
         let exchangeText = exchange.exchangeRate != nil ? "\(exchange.exchangeRate!)" : "-"
         return ExchangeRowPresentationModel(currencyRatioText: ratioText, exchangeValue: exchangeText)
     }
