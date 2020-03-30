@@ -62,6 +62,16 @@
 		E55B729B2430F4CC00AE7EC3 /* invalidCurrencies-test.json in Resources */ = {isa = PBXBuildFile; fileRef = E55B72972430F32D00AE7EC3 /* invalidCurrencies-test.json */; };
 		E55B729F24311D0F00AE7EC3 /* ExchangeRatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51BEF54242E653800B4BE65 /* ExchangeRatesView.swift */; };
 		E55B72A024311D2B00AE7EC3 /* ExchangeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5383E40242F41FA00226B61 /* ExchangeRow.swift */; };
+		E55B72A324321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72A224321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift */; };
+		E55B72A424321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72A224321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift */; };
+		E55B72A524321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72A224321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift */; };
+		E55B72A7243235E000AE7EC3 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72A6243235E000AE7EC3 /* UserDefaults.swift */; };
+		E55B72A9243238B600AE7EC3 /* UserDefaultsExchangeRatesDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72A8243238B600AE7EC3 /* UserDefaultsExchangeRatesDataSourceTests.swift */; };
+		E55B72AA24323ACA00AE7EC3 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72A6243235E000AE7EC3 /* UserDefaults.swift */; };
+		E55B72AB24323ACB00AE7EC3 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72A6243235E000AE7EC3 /* UserDefaults.swift */; };
+		E55B72B0243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */; };
+		E55B72B1243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */; };
+		E55B72B2243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */; };
 		E56BD0D5243002EC0015869B /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */; };
 		E56BD0D624308C050015869B /* ExchangeRatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */; };
 		E56BD0D824308F670015869B /* MockExchangeRatesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56BD0D724308F670015869B /* MockExchangeRatesRepository.swift */; };
@@ -115,6 +125,10 @@
 		E55B728F2430D76000AE7EC3 /* Configs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configs.swift; sourceTree = "<group>"; };
 		E55B72962430F32900AE7EC3 /* validCurrencies-test.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "validCurrencies-test.json"; sourceTree = "<group>"; };
 		E55B72972430F32D00AE7EC3 /* invalidCurrencies-test.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "invalidCurrencies-test.json"; sourceTree = "<group>"; };
+		E55B72A224321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesPersistenceService.swift; sourceTree = "<group>"; };
+		E55B72A6243235E000AE7EC3 /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		E55B72A8243238B600AE7EC3 /* UserDefaultsExchangeRatesDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExchangeRatesDataSourceTests.swift; sourceTree = "<group>"; };
+		E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExchangeRatesPersistenceService.swift; sourceTree = "<group>"; };
 		E56BD0D4243002EC0015869B /* ExchangeRatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesViewModel.swift; sourceTree = "<group>"; };
 		E56BD0D724308F670015869B /* MockExchangeRatesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockExchangeRatesRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,9 +182,10 @@
 			isa = PBXGroup;
 			children = (
 				E55B72762430A6A800AE7EC3 /* UIModules */,
-				E5383E54242FC18700226B61 /* Entities */,
-				E5383E45242FB1C900226B61 /* ExchangesRatesRepository */,
+				E55B72A124321C3A00AE7EC3 /* ExchangeRatesPersistenceService */,
 				E51BEF87242E73D400B4BE65 /* CurrenciesDataSource */,
+				E5383E45242FB1C900226B61 /* ExchangesRatesRepository */,
+				E5383E54242FC18700226B61 /* Entities */,
 				E55B72952430D8B500AE7EC3 /* Other */,
 				E51BEF50242E653800B4BE65 /* AppDelegate.swift */,
 				E51BEF52242E653800B4BE65 /* SceneDelegate.swift */,
@@ -196,6 +211,7 @@
 				E55B729E2430F55600AE7EC3 /* Resources */,
 				E51BEF8B242E789F00B4BE65 /* BundleCurrenciesDataSourceTest.swift */,
 				E5383E4E242FB54F00226B61 /* BaseExchangeRatesRepositoryTests.swift */,
+				E55B72A8243238B600AE7EC3 /* UserDefaultsExchangeRatesDataSourceTests.swift */,
 				E51BEF69242E653D00B4BE65 /* Info.plist */,
 			);
 			path = ExchangeRatesTrackerTests;
@@ -268,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				E55B72732430A26900AE7EC3 /* Bundle.swift */,
+				E55B72A6243235E000AE7EC3 /* UserDefaults.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -308,6 +325,15 @@
 				E55B72972430F32D00AE7EC3 /* invalidCurrencies-test.json */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		E55B72A124321C3A00AE7EC3 /* ExchangeRatesPersistenceService */ = {
+			isa = PBXGroup;
+			children = (
+				E55B72A224321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift */,
+				E55B72AF243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift */,
+			);
+			path = ExchangeRatesPersistenceService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -457,7 +483,10 @@
 				E55B72802430A72500AE7EC3 /* NewExchangeRateView.swift in Sources */,
 				E5383E47242FB20300226B61 /* ExchangeRatesRepository.swift in Sources */,
 				E51BEF55242E653800B4BE65 /* ExchangeRatesView.swift in Sources */,
+				E55B72B0243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */,
+				E55B72A324321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift in Sources */,
 				E51BEF82242E72D900B4BE65 /* CurrenciesDataSource.swift in Sources */,
+				E55B72A7243235E000AE7EC3 /* UserDefaults.swift in Sources */,
 				E56BD0D5243002EC0015869B /* ExchangeRatesViewModel.swift in Sources */,
 				E5383E4C242FB44A00226B61 /* BaseExchangeRatesRepository.swift in Sources */,
 				E5383E49242FB24600226B61 /* ExchangeRate.swift in Sources */,
@@ -471,6 +500,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E51BEF8C242E789F00B4BE65 /* BundleCurrenciesDataSourceTest.swift in Sources */,
+				E55B72B1243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */,
 				E55B72942430D8A400AE7EC3 /* Bundle.swift in Sources */,
 				E55B72A024311D2B00AE7EC3 /* ExchangeRow.swift in Sources */,
 				E5383E51242FB70E00226B61 /* ExchangeRatesRepository.swift in Sources */,
@@ -481,11 +511,14 @@
 				E5383E56242FC91E00226B61 /* ExchangeRate.swift in Sources */,
 				E51BEF86242E730B00B4BE65 /* BundleCurrenciesDataSource.swift in Sources */,
 				E56BD0D624308C050015869B /* ExchangeRatesViewModel.swift in Sources */,
+				E55B72A424321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift in Sources */,
 				E55B726A2430952500AE7EC3 /* MockExchangeRatesRepository.swift in Sources */,
 				E5383E4D242FB44A00226B61 /* BaseExchangeRatesRepository.swift in Sources */,
 				E55B72912430D76000AE7EC3 /* Configs.swift in Sources */,
 				E5383E57242FCB6B00226B61 /* CurrencyPair.swift in Sources */,
+				E55B72AA24323ACA00AE7EC3 /* UserDefaults.swift in Sources */,
 				E51BEF83242E72D900B4BE65 /* CurrenciesDataSource.swift in Sources */,
+				E55B72A9243238B600AE7EC3 /* UserDefaultsExchangeRatesDataSourceTests.swift in Sources */,
 				E55B729F24311D0F00AE7EC3 /* ExchangeRatesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,9 +529,11 @@
 			files = (
 				E55B72692430952400AE7EC3 /* MockExchangeRatesRepository.swift in Sources */,
 				E55B726B2430953B00AE7EC3 /* ExchangeRatesViewModel.swift in Sources */,
+				E55B72B2243249F900AE7EC3 /* UserDefaultsExchangeRatesPersistenceService.swift in Sources */,
 				E51BEF73242E653D00B4BE65 /* ExchangeRatesTrackerUITests.swift in Sources */,
 				E55B728A2430D21900AE7EC3 /* ViewProvider.swift in Sources */,
 				E5383E42242F41FA00226B61 /* ExchangeRow.swift in Sources */,
+				E55B72A524321E0B00AE7EC3 /* ExchangeRatesPersistenceService.swift in Sources */,
 				E55B726C2430959900AE7EC3 /* ExchangeRate.swift in Sources */,
 				E55B726F2430962A00AE7EC3 /* BundleCurrenciesDataSource.swift in Sources */,
 				E55B72822430A72500AE7EC3 /* NewExchangeRateView.swift in Sources */,
@@ -507,6 +542,7 @@
 				E55B72922430D76000AE7EC3 /* Configs.swift in Sources */,
 				E55B72672430952400AE7EC3 /* ExchangeRatesRepository.swift in Sources */,
 				E55B72932430D8A400AE7EC3 /* Bundle.swift in Sources */,
+				E55B72AB24323ACB00AE7EC3 /* UserDefaults.swift in Sources */,
 				E55B726E2430962A00AE7EC3 /* CurrenciesDataSource.swift in Sources */,
 				E55B726D2430959900AE7EC3 /* CurrencyPair.swift in Sources */,
 				E5383E43242F4CA000226B61 /* ExchangeRatesView.swift in Sources */,

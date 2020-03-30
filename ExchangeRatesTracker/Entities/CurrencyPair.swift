@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CurrencyPair: Equatable {
+public struct CurrencyPair: Equatable, Codable {
     let baseCurrency: String
     let counterCurrency: String
 }
