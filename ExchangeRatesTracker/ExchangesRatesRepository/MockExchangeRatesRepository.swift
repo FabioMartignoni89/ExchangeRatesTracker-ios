@@ -14,7 +14,7 @@ class MockExchangeRatesRepository: ExchangeRatesRepository {
         return [ExchangeRate](repeating: ExchangeRate(currencyPair: CurrencyPair(baseCurrency: "EUR", counterCurrency: "CHF"), exchangeRate: 1.21), count: 30)
     }
     
-    func getCurrencies() throws -> [String] {
+    func getCurrencies() -> [String] {
         return ["EUR", "CHF", "USD", "GBP", "RUB", "JPY"]
     }
     

@@ -10,6 +10,7 @@ import XCTest
 
 class BaseExchangeRatesRepositoryTests: XCTestCase {
     
+    let mockUserDefaults = MockUserDefaults()
     let mockCurrenciesDataSource = MockCurrenciesDataSource()
     var repo: ExchangeRatesRepository?
     
@@ -17,7 +18,10 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
     let CHFEUR = CurrencyPair(baseCurrency: "CHF", counterCurrency: "EUR")
 
     override func setUp() {
-        repo = BaseExchangeRatesRepository(currenciesDataSource: mockCurrenciesDataSource)
+        mockUserDefaults.reset()
+        let persistenceService = UserDefaultsExchangeRatesPersistenceService(userDefaults: mockUserDefaults)
+        repo = BaseExchangeRatesRepository(currenciesDataSource: mockCurrenciesDataSource,
+                                           exchangeRatesPersistenceService: persistenceService)
     }
     
     func testZeroExchangesInitiallyReturned() {
@@ -65,13 +69,8 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
     }
     
     func testCanGetCurrencies() {
-        do {
-            let currencies = try repo!.getCurrencies()
-            XCTAssertEqual(mockCurrenciesDataSource.hardCodedCurrencies.count, currencies.count)
-        }
-        catch {
-            XCTFail("Check MockCurrenciesDataSource implementation. \(error.localizedDescription)")
-        }
+        let currencies = repo!.getCurrencies()
+        XCTAssertEqual(mockCurrenciesDataSource.hardCodedCurrencies.count, currencies.count)
     }
 }
 

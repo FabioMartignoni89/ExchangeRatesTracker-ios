@@ -11,10 +11,19 @@ import Foundation
 class BaseExchangeRatesRepository {
     
     let currenciesDataSource: CurrenciesDataSource
-    private var trackedPairs = [CurrencyPair]()
+    let exchangeRatesPersistenceService: ExchangeRatesPersistenceService
+    private var trackedPairs: [CurrencyPair]
     
-    init(currenciesDataSource: CurrenciesDataSource) {
+    init(currenciesDataSource: CurrenciesDataSource, exchangeRatesPersistenceService: ExchangeRatesPersistenceService)  {
         self.currenciesDataSource = currenciesDataSource
+        self.exchangeRatesPersistenceService = exchangeRatesPersistenceService
+        do {
+            self.trackedPairs = try exchangeRatesPersistenceService.loadTrackedCurrencyPairs()
+        }
+        catch {
+            print(error.localizedDescription)
+            self.trackedPairs = [CurrencyPair]()
+        }
     }
     
     // MARK: private
@@ -35,7 +44,24 @@ class BaseExchangeRatesRepository {
             return [String]()
         }
     }
+  
+    private func saveTrackedPairs() {
+        do {
+            try exchangeRatesPersistenceService.saveTrackedCurrencyPairs(pairs: trackedPairs)
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+    }
     
+    private func loadTrackedPairs() {
+        do {
+            try exchangeRatesPersistenceService.saveTrackedCurrencyPairs(pairs: trackedPairs)
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+    }
 }
 
 extension BaseExchangeRatesRepository: ExchangeRatesRepository {    
@@ -46,8 +72,14 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
         }
     }
     
-    func getCurrencies() throws -> [String] {
-        return try currenciesDataSource.getCurrencies()
+    func getCurrencies() -> [String] {
+        do {
+            return try currenciesDataSource.getCurrencies()
+        }
+        catch {
+            print(error.localizedDescription)
+            return [String]()
+        }
     }
     
     func track(pair: CurrencyPair) {
@@ -60,12 +92,15 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
         }
         
         trackedPairs.append(pair)
+        saveTrackedPairs()
     }
     
     func untrack(pair: CurrencyPair) {
         trackedPairs.removeAll { (CurrencyPair) -> Bool in
             CurrencyPair == pair
         }
+        
+        saveTrackedPairs()
     }
     
 }

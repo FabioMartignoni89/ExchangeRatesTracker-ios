@@ -17,12 +17,13 @@ protocol ViewProvider {
 
 class BaseViewProvider {
 
-    let currenciesDataSource: CurrenciesDataSource
     let exchangeRatesRepository: ExchangeRatesRepository
     
     init() {
-        currenciesDataSource = BundleCurrenciesDataSource(fileName: Configs.CURRENCIES_FILE_NAME)
-        exchangeRatesRepository = BaseExchangeRatesRepository(currenciesDataSource: currenciesDataSource)
+        let persistenceService = UserDefaultsExchangeRatesPersistenceService(userDefaults: UserDefaults.standard)
+        let currenciesDataSource = BundleCurrenciesDataSource(fileName: Configs.CURRENCIES_FILE_NAME)
+        exchangeRatesRepository = BaseExchangeRatesRepository(currenciesDataSource: currenciesDataSource,
+                                                              exchangeRatesPersistenceService: persistenceService)
     }
 }
 

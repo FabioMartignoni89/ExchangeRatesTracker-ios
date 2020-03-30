@@ -12,7 +12,7 @@ public protocol ExchangeRatesRepository {
     
     /**
      Get  the tracked exchanges.
-     - returns: an array of exchanges
+     - returns: an array of exchange rates
      */
     func getExchangeRates() -> [ExchangeRate]
     
@@ -20,7 +20,7 @@ public protocol ExchangeRatesRepository {
      Get  the available currencies.
      - returns: an array of currency codes
      */
-    func getCurrencies() throws -> [String]
+    func getCurrencies() -> [String]
     
     /**
      Track a valid new currency pair.

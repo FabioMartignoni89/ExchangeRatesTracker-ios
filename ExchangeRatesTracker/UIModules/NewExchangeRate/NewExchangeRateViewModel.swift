@@ -35,6 +35,11 @@ final class BaseNewExchangeRateViewModel: ObservableObject {
 extension BaseNewExchangeRateViewModel: NewExchangeRateViewModel {
     func trackNewExchangeRate(baseCurrency: String, counterCurrency: String) {
         let newPair = CurrencyPair(baseCurrency: baseCurrency, counterCurrency: counterCurrency)
-        repository.track(pair: newPair)
+        do {
+            try  repository.track(pair: newPair)
+        }
+        catch {
+            print(error.localizedDescription) //TODO: user error message
+        }
     }
 }
