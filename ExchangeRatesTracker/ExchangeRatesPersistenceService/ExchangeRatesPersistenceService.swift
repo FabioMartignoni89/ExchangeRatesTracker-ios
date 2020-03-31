@@ -9,6 +9,6 @@
 import Foundation
 
 protocol ExchangeRatesPersistenceService {
-    func saveTrackedCurrencyPairs(pairs: [CurrencyPair]) throws
-    func loadTrackedCurrencyPairs() throws -> [CurrencyPair]
+    func saveTrackedCurrencyPairs(pairs: [CurrencyPairDTO]) throws
+    func loadTrackedCurrencyPairs() throws -> [CurrencyPairDTO]
 }

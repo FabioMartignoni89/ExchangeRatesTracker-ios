@@ -14,8 +14,8 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
     let mockCurrenciesDataSource = MockCurrenciesDataSource()
     var repo: ExchangeRatesRepository?
     
-    let EURCHF = CurrencyPair(baseCurrency: "EUR", counterCurrency: "CHF")
-    let CHFEUR = CurrencyPair(baseCurrency: "CHF", counterCurrency: "EUR")
+    let EURCHF = CurrencyPairDTO(baseCurrency: "EUR", counterCurrency: "CHF")
+    let CHFEUR = CurrencyPairDTO(baseCurrency: "CHF", counterCurrency: "EUR")
 
     override func setUp() {
         mockUserDefaults.reset()
@@ -76,7 +76,7 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
 
 // MARK: - Mocks
 
-class MockCurrenciesDataSource: CurrenciesDataSource {
+class MockCurrenciesDataSource: ExchangeRatesDataSource {
     let hardCodedCurrencies = ["EUR", "CHF", "USD", "GBP", "RUB", "JPY"]
     
     func getCurrencies() throws -> [String] {

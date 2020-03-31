@@ -10,11 +10,11 @@ import Foundation
 
 class BaseExchangeRatesRepository {
     
-    let currenciesDataSource: CurrenciesDataSource
+    let currenciesDataSource: ExchangeRatesDataSource
     let exchangeRatesPersistenceService: ExchangeRatesPersistenceService
-    private var trackedPairs: [CurrencyPair]
+    private var trackedPairs: [CurrencyPairDTO]
     
-    init(currenciesDataSource: CurrenciesDataSource, exchangeRatesPersistenceService: ExchangeRatesPersistenceService)  {
+    init(currenciesDataSource: ExchangeRatesDataSource, exchangeRatesPersistenceService: ExchangeRatesPersistenceService)  {
         self.currenciesDataSource = currenciesDataSource
         self.exchangeRatesPersistenceService = exchangeRatesPersistenceService
         do {
@@ -22,13 +22,13 @@ class BaseExchangeRatesRepository {
         }
         catch {
             print(error.localizedDescription)
-            self.trackedPairs = [CurrencyPair]()
+            self.trackedPairs = [CurrencyPairDTO]()
         }
     }
     
     // MARK: private
     
-    private func validateCurrencyPair(pair: CurrencyPair) -> Bool {
+    private func validateCurrencyPair(pair: CurrencyPairDTO) -> Bool {
         let currencies = getAvailableCurrencies()
         return currencies.contains(pair.baseCurrency) &&
             currencies.contains(pair.baseCurrency) &&
@@ -85,7 +85,7 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
     }
     
     func track(base: String, counter: String) {
-        let newPair = CurrencyPair(baseCurrency: base, counterCurrency: counter)
+        let newPair = CurrencyPairDTO(baseCurrency: base, counterCurrency: counter)
         
         if trackedPairs.contains(newPair) {
             return
@@ -100,7 +100,7 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
     }
     
     func untrack(base: String, counter: String) {
-        let newPair = CurrencyPair(baseCurrency: base, counterCurrency: counter)
+        let newPair = CurrencyPairDTO(baseCurrency: base, counterCurrency: counter)
 
         trackedPairs.removeAll { (CurrencyPair) -> Bool in
             CurrencyPair == newPair

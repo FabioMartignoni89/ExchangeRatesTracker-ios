@@ -18,11 +18,11 @@ class UserDefaultsExchangeRatesPersistenceService {
 }
 
 extension UserDefaultsExchangeRatesPersistenceService: ExchangeRatesPersistenceService {
-    func saveTrackedCurrencyPairs(pairs: [CurrencyPair]) throws {
-        try userDefaults.set(type: CurrencyPair.self, values: pairs, forKey: TRACKED_CURRENCY_PAIRS_KEY)
+    func saveTrackedCurrencyPairs(pairs: [CurrencyPairDTO]) throws {
+        try userDefaults.set(type: CurrencyPairDTO.self, values: pairs, forKey: TRACKED_CURRENCY_PAIRS_KEY)
     }
     
-    func loadTrackedCurrencyPairs() throws -> [CurrencyPair] {
-        return try userDefaults.objects(type: CurrencyPair.self, forKey: TRACKED_CURRENCY_PAIRS_KEY)
+    func loadTrackedCurrencyPairs() throws -> [CurrencyPairDTO] {
+        return try userDefaults.objects(type: CurrencyPairDTO.self, forKey: TRACKED_CURRENCY_PAIRS_KEY)
     }
 }

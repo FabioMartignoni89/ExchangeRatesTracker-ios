@@ -21,7 +21,7 @@ class BaseViewProvider {
     
     init() {
         let persistenceService = UserDefaultsExchangeRatesPersistenceService(userDefaults: UserDefaults.standard)
-        let currenciesDataSource = BundleCurrenciesDataSource(fileName: Configs.CURRENCIES_FILE_NAME)
+        let currenciesDataSource = BaseExchangeRatesDataSource(fileName: Configs.CURRENCIES_FILE_NAME)
         exchangeRatesRepository = BaseExchangeRatesRepository(currenciesDataSource: currenciesDataSource,
                                                               exchangeRatesPersistenceService: persistenceService)
     }

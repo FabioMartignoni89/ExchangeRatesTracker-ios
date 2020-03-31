@@ -1,5 +1,5 @@
 //
-//  CurrencyPair.swift
+//  CurrencyPairDTO.swift
 //  ExchangeRatesTracker
 //
 //  Created by Fabio Martignoni on 28/03/2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CurrencyPair: Equatable, Codable {
+public struct CurrencyPairDTO: Equatable, Codable {
     let baseCurrency: String
     let counterCurrency: String
 }

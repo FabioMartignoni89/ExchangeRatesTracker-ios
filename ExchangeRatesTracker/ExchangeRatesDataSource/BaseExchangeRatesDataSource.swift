@@ -1,5 +1,5 @@
 //
-//  BundleCurrenciesDataSource.swift
+//  BaseExchangeRatesDataSource.swift
 //  ExchangeRatesTracker
 //
 //  Created by Fabio Martignoni on 27/03/2020.
@@ -8,30 +8,30 @@
 
 import Foundation
 
-public class BundleCurrenciesDataSource {
+public class BaseExchangeRatesDataSource {
     
-    private let fileName: String
+    private let currenciesFileName: String
     private var currenciesDTO: CurrenciesDTO?
     
     init(fileName: String) {
-        self.fileName = fileName
+        self.currenciesFileName = fileName
     }
     
     private func getCurrenciesDTO() throws -> CurrenciesDTO {
         
         if currenciesDTO == nil { // lazy
-            currenciesDTO = try Bundle.main.loadJSON(type: CurrenciesDTO.self, fileName: fileName)
+            currenciesDTO = try Bundle.main.loadJSON(type: CurrenciesDTO.self, fileName: currenciesFileName)
         }
         
         guard let dto = currenciesDTO else {
-            throw JSONDataIsNil(description: "Error decoding JSON: \(fileName)")
+            throw JSONDataIsNil(description: "Error decoding JSON: \(currenciesFileName)")
         }
         
         return dto
     }
 }
 
-extension BundleCurrenciesDataSource: CurrenciesDataSource {
+extension BaseExchangeRatesDataSource: ExchangeRatesDataSource {
     
     public func getCurrencies() throws -> [String] {
         return try getCurrenciesDTO().worldCurrencies.map { currency in

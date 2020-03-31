@@ -12,7 +12,7 @@ class BundleCurrenciesDataSourceTest: XCTestCase {
     
     func testCanGetCurrencies() {
         do {
-            let dataSource: CurrenciesDataSource = BundleCurrenciesDataSource(fileName: "validCurrencies-test")
+            let dataSource: ExchangeRatesDataSource = BaseExchangeRatesDataSource(fileName: "validCurrencies-test")
             
             let currencies = try dataSource.getCurrencies()
             XCTAssertEqual(currencies.count, 6, "6 currencies expected.")
@@ -23,10 +23,10 @@ class BundleCurrenciesDataSourceTest: XCTestCase {
     }
     
     func testThrowsIfJSONIsInvalid() {
-        XCTAssertThrowsError(try BundleCurrenciesDataSource(fileName: "invalidCurrencies-test").getCurrencies())
+        XCTAssertThrowsError(try BaseExchangeRatesDataSource(fileName: "invalidCurrencies-test").getCurrencies())
     }
     
     func testThrowsIfJSONFileDoNotExists() {
-        XCTAssertThrowsError(try BundleCurrenciesDataSource(fileName: "wrongFileName-test").getCurrencies())
+        XCTAssertThrowsError(try BaseExchangeRatesDataSource(fileName: "wrongFileName-test").getCurrencies())
     }
 }

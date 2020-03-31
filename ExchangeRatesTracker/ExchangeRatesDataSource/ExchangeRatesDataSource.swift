@@ -1,5 +1,5 @@
 //
-//  CurrenciesDataSource.swift
+//  ExchangeRatesDataSource.swift
 //  ExchangeRatesTracker
 //
 //  Created by Fabio Martignoni on 27/03/2020.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol CurrenciesDataSource {
+public protocol ExchangeRatesDataSource {
     
     /**
      Get all the available currencies.

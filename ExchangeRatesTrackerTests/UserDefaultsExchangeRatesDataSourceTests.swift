@@ -47,16 +47,16 @@ class UserDefaultsExchangeRatesDataSourceTests: XCTestCase {
     
     // MARK: Utils
     
-    private func prepareTestPairs1() -> [CurrencyPair] {
-        return [CurrencyPair(baseCurrency: "A", counterCurrency: "B"),
-                CurrencyPair(baseCurrency: "F", counterCurrency: "B"),
-                CurrencyPair(baseCurrency: "A", counterCurrency: "C")]
+    private func prepareTestPairs1() -> [CurrencyPairDTO] {
+        return [CurrencyPairDTO(baseCurrency: "A", counterCurrency: "B"),
+                CurrencyPairDTO(baseCurrency: "F", counterCurrency: "B"),
+                CurrencyPairDTO(baseCurrency: "A", counterCurrency: "C")]
     }
     
-    private func prepareTestPairs2() -> [CurrencyPair] {
-        return [CurrencyPair(baseCurrency: "C", counterCurrency: "B"),
-                CurrencyPair(baseCurrency: "F", counterCurrency: "B"),
-                CurrencyPair(baseCurrency: "A", counterCurrency: "C")]
+    private func prepareTestPairs2() -> [CurrencyPairDTO] {
+        return [CurrencyPairDTO(baseCurrency: "C", counterCurrency: "B"),
+                CurrencyPairDTO(baseCurrency: "F", counterCurrency: "B"),
+                CurrencyPairDTO(baseCurrency: "A", counterCurrency: "C")]
     }
 }
 
