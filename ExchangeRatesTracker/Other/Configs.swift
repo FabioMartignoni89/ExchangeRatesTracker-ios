@@ -6,9 +6,6 @@
 //  Copyright © 2020 fabiomartignoni. All rights reserved.
 //
 
-import Foundation
-
 struct Configs {
-    
     static let CURRENCIES_FILE_NAME = "currencies"
 }

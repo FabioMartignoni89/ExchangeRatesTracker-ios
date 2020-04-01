@@ -8,15 +8,16 @@
 
 import Foundation
 
-class BaseExchangeRatesRepository {
-    
-    let currenciesDataSource: ExchangeRatesDataSource
-    let exchangeRatesPersistenceService: ExchangeRatesPersistenceService
+class BaseExchangeRatesRepository: ObservableObject {
+    let dataSource: ExchangeRatesDataSource
+    let persistenceService: ExchangeRatesPersistenceService
     private var trackedPairs: [CurrencyPairDTO]
+    let refreshInterval = 1
     
     init(currenciesDataSource: ExchangeRatesDataSource, exchangeRatesPersistenceService: ExchangeRatesPersistenceService)  {
-        self.currenciesDataSource = currenciesDataSource
-        self.exchangeRatesPersistenceService = exchangeRatesPersistenceService
+        self.dataSource = currenciesDataSource
+        self.persistenceService = exchangeRatesPersistenceService
+        
         do {
             self.trackedPairs = try exchangeRatesPersistenceService.loadTrackedCurrencyPairs()
         }
@@ -37,7 +38,7 @@ class BaseExchangeRatesRepository {
     
     private func getAvailableCurrencies() -> [String] {
         do {
-            return try currenciesDataSource.getCurrencies()
+            return try dataSource.getCurrencies()
         }
         catch {
             print("Can't get currencies list. \(error)")
@@ -47,7 +48,7 @@ class BaseExchangeRatesRepository {
   
     private func saveTrackedPairs() {
         do {
-            try exchangeRatesPersistenceService.saveTrackedCurrencyPairs(pairs: trackedPairs)
+            try persistenceService.saveTrackedCurrencyPairs(pairs: trackedPairs)
         }
         catch {
             print(error.localizedDescription)
@@ -56,7 +57,7 @@ class BaseExchangeRatesRepository {
     
     private func loadTrackedPairs() {
         do {
-            try exchangeRatesPersistenceService.saveTrackedCurrencyPairs(pairs: trackedPairs)
+            try persistenceService.saveTrackedCurrencyPairs(pairs: trackedPairs)
         }
         catch {
             print(error.localizedDescription)
@@ -66,17 +67,35 @@ class BaseExchangeRatesRepository {
 
 extension BaseExchangeRatesRepository: ExchangeRatesRepository {    
    
-    func getExchangeRates() -> [ExchangeRate] {
-        return trackedPairs.map { (currencyPair) -> ExchangeRate in
-            ExchangeRate(baseCurrency: currencyPair.baseCurrency,
-                              counterCurrency: currencyPair.counterCurrency,
-                              exchangeRate: nil)
+    func getExchangeRates(onResult: @escaping (Result<[ExchangeRate], Error>) -> ()) {
+        let pairs: [String] = trackedPairs.map { pair in
+            return "\(pair.baseCurrency)\(pair.counterCurrency)"
+        }
+        
+        dataSource.fetchExchangeRates(currencyPairs: pairs) { result in
+            switch result {
+                case let .failure(error):
+                    onResult(.failure(error))
+                    break
+
+                case let .success(data):
+                    var newExchangeRates = [ExchangeRate]()
+                    for index in 0..<pairs.count {
+                        let rate = ExchangeRate(baseCurrency: self.trackedPairs[index].baseCurrency,
+                                                counterCurrency: self.trackedPairs[index].counterCurrency,
+                                                exchangeRate: data[index])
+                        newExchangeRates.append(rate)
+                    }
+                    onResult(.success(newExchangeRates))
+                    print("\(pairs.count) exchange rates retrieved")
+                    break;
+            }
         }
     }
     
     func getCurrencies() -> [String] {
         do {
-            return try currenciesDataSource.getCurrencies()
+            return try dataSource.getCurrencies()
         }
         catch {
             print(error.localizedDescription)
@@ -97,6 +116,7 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
         
         trackedPairs.append(newPair)
         saveTrackedPairs()
+        print("\(base)/\(counter) tracked")
     }
     
     func untrack(base: String, counter: String) {
@@ -105,8 +125,9 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
         trackedPairs.removeAll { (CurrencyPair) -> Bool in
             CurrencyPair == newPair
         }
-        
+            
         saveTrackedPairs()
+        print("\(base)/\(counter) untracked")
     }
     
 }

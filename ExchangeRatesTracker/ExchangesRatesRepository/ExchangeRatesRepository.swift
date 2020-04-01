@@ -14,7 +14,7 @@ public protocol ExchangeRatesRepository {
      Get  the tracked exchanges.
      - returns: an array of exchange rates
      */
-    func getExchangeRates() -> [ExchangeRate]
+    func getExchangeRates(onResult: @escaping (Result<[ExchangeRate], Error>) -> ())
     
     /**
      Get  the available currencies.

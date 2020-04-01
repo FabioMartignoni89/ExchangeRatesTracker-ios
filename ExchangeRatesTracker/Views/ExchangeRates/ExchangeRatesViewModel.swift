@@ -11,7 +11,6 @@ import Combine
 
 protocol ExchangeRatesViewModel {
     var exchangeRates: [ExchangeRate] { get }
-    func fetchExchanges()
     func untrackExchangeRate(exchange: ExchangeRate)
 }
 
@@ -19,20 +18,36 @@ final class BaseExchangeRatesViewModel: ObservableObject {
     @Published var exchangeRates = [ExchangeRate]()
     
     private let repository: ExchangeRatesRepository
+    private let refreshInterval = 1
     
     init(repository: ExchangeRatesRepository) {
         self.repository = repository
-        fetchExchanges()
+        
+        Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshInterval), repeats: true, block: { timer in
+            self.fetchExchangeRates()
+        }).fire()
+    }
+    
+    private func fetchExchangeRates() {
+        repository.getExchangeRates() { result in
+            switch result {
+                case let .failure(error):
+                    print(error.localizedDescription)
+                    break
+
+                case let .success(data):
+                    DispatchQueue.main.async {
+                        self.exchangeRates = data
+                    }
+                    break
+            }
+        }
     }
 }
 
 extension BaseExchangeRatesViewModel: ExchangeRatesViewModel {
-    func fetchExchanges() {
-        exchangeRates = repository.getExchangeRates()
-    }
     
     func untrackExchangeRate(exchange: ExchangeRate) {
         repository.untrack(base: exchange.baseCurrency, counter: exchange.counterCurrency)
-        fetchExchanges()
     }
 }

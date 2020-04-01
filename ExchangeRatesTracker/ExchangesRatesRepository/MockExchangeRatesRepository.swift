@@ -9,11 +9,12 @@
 import Foundation
 
 class MockExchangeRatesRepository: ExchangeRatesRepository {
-   
-    func getExchangeRates() -> [ExchangeRate] {
-        return [ExchangeRate](repeating: ExchangeRate(baseCurrency: "EUR", counterCurrency: "CHF", exchangeRate: 1.21), count: 30)
+    var exchangeRates: [ExchangeRate] = [ExchangeRate](repeating: ExchangeRate(baseCurrency: "EUR", counterCurrency: "CHF", exchangeRate: 1.21), count: 30)
+
+    func getExchangeRates(onResult: @escaping (Result<[ExchangeRate], Error>) -> ()) {
+        onResult(.success(exchangeRates))
     }
-    
+        
     func getCurrencies() -> [String] {
         return ["EUR", "CHF", "USD", "GBP", "RUB", "JPY"]
     }

@@ -37,7 +37,7 @@ public struct ExchangeRatesView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(isPresented: $isNexExchangeRateViewPresented, onDismiss: {
-            self.viewModel.fetchExchanges()
+            //self.viewModel.fetchExchanges()
         }) {
             self.viewProvider.provideNewExchangeRate()
         }
