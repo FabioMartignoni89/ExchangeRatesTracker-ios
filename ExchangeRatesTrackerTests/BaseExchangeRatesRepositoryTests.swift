@@ -12,7 +12,8 @@ import Combine
 class BaseExchangeRatesRepositoryTests: XCTestCase {
     
     let mockUserDefaults = MockUserDefaults()
-    let mockCurrenciesDataSource = MockCurrenciesDataSource()
+    let dataSource = MockCurrenciesDataSource()
+    let persistenceService = MockExchangeRatesPersistenceService()
     var repo: ExchangeRatesRepository?
     let timeout = 5.0
     var subscribers = [AnyCancellable]()
@@ -21,8 +22,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
     let CHFEUR = CurrencyPairDTO(baseCurrency: "CHF", counterCurrency: "EUR")
 
     override func setUp() {
-        repo = BaseExchangeRatesRepository(currenciesDataSource: mockCurrenciesDataSource,
-                                           exchangeRatesPersistenceService: MockExchangeRatesPersistenceService())
+        persistenceService.reset()
+        repo = BaseExchangeRatesRepository(currenciesDataSource: dataSource,
+                                           exchangeRatesPersistenceService: persistenceService)
     }
     
     override func tearDown() {
@@ -31,97 +33,40 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
         }
     }
     
-    /*
+    
     func testZeroExchangesInitiallyReturned() {
-        let promise = expectation(description: "No exchanges should be tracked initially.")
-
-        subscribers.append(
-            repo!.getExchangeRatesPublisher()
-            .sink(receiveValue: { data in
-                XCTAssertEqual(0 , data.count)
-                promise.fulfill()
-            })
-        )
-        
-        wait(for: [promise], timeout: timeout)
+        XCTAssertEqual(0 , try persistenceService.loadTrackedCurrencyPairs().count)
     }
     
     func testCanTrackExchangeRates() {
         repo!.track(base: "EUR", counter: "CHF")
         repo!.track(base: "CHF", counter: "EUR")
-        
-        let promise = expectation(description: "2 exchanges expected.")
-        subscribers.append(
-            repo!.getExchangeRatesPublisher()
-            .sink(receiveValue: { data in
-                
-                XCTAssertEqual(2 , data.count)
-                promise.fulfill()
-        }))
-        
-        wait(for: [promise], timeout: timeout)
+        XCTAssertEqual(2 , try persistenceService.loadTrackedCurrencyPairs().count)
     }
     
     func testAvoidTrackingDuplications() {
         repo!.track(base: "EUR", counter: "CHF")
         repo!.track(base: "EUR", counter: "CHF")
         repo!.track(base: "CHF", counter: "EUR")
-        
-        let promise = expectation(description: "The same pair is being tracked multiple times.")
-
-        subscribers.append(
-            repo!.getExchangeRatesPublisher()
-            .sink(receiveValue: { data in
-                XCTAssertEqual(2 , data.count)
-                promise.fulfill()
-        }))
-        
-        wait(for: [promise], timeout: timeout)
+        XCTAssertEqual(2, try persistenceService.loadTrackedCurrencyPairs().count)
     }
     
     func testAvoidTrackingOfInvalidCurrencyPairs() {
         repo!.track(base: "CHF", counter: "CHF")
         repo!.track(base: "", counter: "CHF")
-
-        let promise = expectation(description: "Invalid pairs are not tracked.")
-
-        subscribers.append(repo!.getExchangeRatesPublisher()
-            .sink(receiveValue: { data in
-                XCTAssertEqual(0 , data.count)
-                promise.fulfill()
-        }))
-        
-        wait(for: [promise], timeout: timeout)
-
+        XCTAssertEqual(0 , try persistenceService.loadTrackedCurrencyPairs().count)
     }
     
     func testCanUntrackCurrency() {
         repo!.track(base: "EUR", counter: "CHF")
         repo!.track(base: "CHF", counter: "EUR")
         repo!.untrack(base: "CHF", counter: "EUR")
-        
-        let promise = expectation(description: "the currency wil be untracked.")
-
-        subscribers.append(repo!.getExchangeRatesPublisher()
-            .sink(receiveValue: { data in
-                XCTAssertEqual(1 , data.count)
-                promise.fulfill()
-        }))
-                
-        wait(for: [promise], timeout: timeout)
+        XCTAssertEqual(1, try persistenceService.loadTrackedCurrencyPairs().count)
     }
     
     func testUntrackEmptyListDoesNothing() {
         repo!.untrack(base: "CHF", counter: "EUR")
-        let promise = expectation(description: "nothing should happen.")
-
-        subscribers.append(repo!.getExchangeRatesPublisher()
-            .sink(receiveValue: { data in
-                XCTAssertEqual(0 , data.count)
-                promise.fulfill()
-        }))
-                
-        wait(for: [promise], timeout: timeout)
+        XCTAssertEqual(0 , try persistenceService.loadTrackedCurrencyPairs().count)
     }
     
     func testUntrackMoreThanOneTimeDoesNothing() {
@@ -129,21 +74,21 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
         repo!.track(base: "CHF", counter: "EUR")
         repo!.untrack(base: "CHF", counter: "EUR")
         repo!.untrack(base: "CHF", counter: "EUR")
-
-        let promise = expectation(description: "the second untrack should have done nothing.")
-
-        subscribers.append(repo!.getExchangeRatesPublisher()
-            .sink(receiveValue: { data in
-                XCTAssertEqual(1 , data.count)
-                promise.fulfill()
-        }))
-        
-        wait(for: [promise], timeout: timeout)
-    }*/
+        XCTAssertEqual(1, try persistenceService.loadTrackedCurrencyPairs().count)
+    }
     
     func testCanGetCurrencies() {
         let currencies = repo!.getCurrencies()
-        XCTAssertEqual(mockCurrenciesDataSource.hardCodedCurrencies.count, currencies.count)
+        XCTAssertEqual(dataSource.hardCodedCurrencies.count, currencies.count)
+    }
+    
+    func testCanGetCity() {
+        let city = repo!.getRefCity(currency: "EUR")
+        XCTAssertEqual("Bruxelles", city?.name)
+    }
+    
+    func testCityIsNilIfCurrencyIsInvalid() {
+        XCTAssertNil(repo!.getRefCity(currency: "ZZZ"))
     }
 }
 
@@ -152,7 +97,12 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
 class MockCurrenciesDataSource: ExchangeRatesDataSource {
     
     func getRefCity(currency: String) -> RefCity? {
-        return RefCity(name: "London", latitude: 1.0, longitude: 1.0)
+        if currency == "EUR" {
+            return RefCity(name: "Bruxelles", latitude: 1.0, longitude: 1.0)
+        }
+        else {
+            return nil
+        }
     }
     
     func fetchExchangeRates(currencyPairs: [String], onResult: @escaping (Result<[Double], Error>) -> ()) {
@@ -182,5 +132,9 @@ class MockExchangeRatesPersistenceService: ExchangeRatesPersistenceService {
         return pairs
     }
     
+    //MARK: - utils
     
+    func reset() {
+        pairs = [CurrencyPairDTO]()
+    }
 }
