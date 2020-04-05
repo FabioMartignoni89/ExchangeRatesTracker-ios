@@ -11,8 +11,8 @@ import Foundation
 class MockExchangeRatesRepository: ExchangeRatesRepository {
     var exchangeRates: [ExchangeRate] = [ExchangeRate](repeating: ExchangeRate(baseCurrency: "EUR", counterCurrency: "CHF", exchangeRate: 1.21), count: 30)
 
-    func getExchangeRates(onResult: @escaping (Result<[ExchangeRate], Error>) -> ()) {
-        onResult(.success(exchangeRates))
+    func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ()) {
+        onResult(exchangeRates)
     }
         
     func getCurrencies() -> [String] {

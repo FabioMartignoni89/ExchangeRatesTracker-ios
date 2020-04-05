@@ -25,17 +25,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
     func testZeroExchangesInitiallyReturned() {
         let promise = expectation(description: "No exchanges should be tracked initially.")
 
-        repo!.getExchangeRates() { result in
-            switch result {
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    XCTAssertEqual(0 , data.count)
-                    promise.fulfill()
-                    break
-            }
+        repo!.getExchangeRates() { data in
+            XCTAssertEqual(0 , data.count)
+            promise.fulfill()
         }
         
         wait(for: [promise], timeout: 1)
@@ -47,17 +39,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
         
         let promise = expectation(description: "2 exchanges expected.")
 
-        repo!.getExchangeRates() { result in
-            switch result {
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    XCTAssertEqual(2 , data.count)
-                    promise.fulfill()
-                    break
-            }
+        repo!.getExchangeRates() { data in
+            XCTAssertEqual(2 , data.count)
+            promise.fulfill()
         }
         
         wait(for: [promise], timeout: 1)
@@ -70,17 +54,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
         
         let promise = expectation(description: "The same pair is being tracked multiple times.")
 
-        repo!.getExchangeRates() { result in
-            switch result {
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    XCTAssertEqual(2 , data.count)
-                    promise.fulfill()
-                    break
-            }
+        repo!.getExchangeRates() { data in
+            XCTAssertEqual(2 , data.count)
+            promise.fulfill()
         }
         
         wait(for: [promise], timeout: 1)
@@ -92,17 +68,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
 
         let promise = expectation(description: "Invalid pairs are not tracked.")
 
-        repo!.getExchangeRates() { result in
-            switch result {
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    XCTAssertEqual(0, data.count)
-                    promise.fulfill()
-                    break
-            }
+        repo!.getExchangeRates() { data in
+            XCTAssertEqual(0, data.count)
+            promise.fulfill()
         }
         
         wait(for: [promise], timeout: 1)
@@ -116,17 +84,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
         
         let promise = expectation(description: "the currency wil be untracked.")
 
-        repo!.getExchangeRates() { result in
-            switch result {
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    XCTAssertEqual(1, data.count)
-                    promise.fulfill()
-                    break
-            }
+        repo!.getExchangeRates() { data in
+            XCTAssertEqual(1, data.count)
+            promise.fulfill()
         }
         
         wait(for: [promise], timeout: 1)
@@ -136,17 +96,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
         repo!.untrack(base: "CHF", counter: "EUR")
         let promise = expectation(description: "nothing should happen.")
 
-        repo!.getExchangeRates() { result in
-            switch result {
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    XCTAssertEqual(0, data.count)
-                    promise.fulfill()
-                    break
-            }
+        repo!.getExchangeRates() { data in
+            XCTAssertEqual(0, data.count)
+            promise.fulfill()
         }
         
         wait(for: [promise], timeout: 1)
@@ -160,17 +112,9 @@ class BaseExchangeRatesRepositoryTests: XCTestCase {
 
         let promise = expectation(description: "the second untrack should have done nothing.")
 
-        repo!.getExchangeRates() { result in
-            switch result {
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    XCTAssertEqual(1, data.count)
-                    promise.fulfill()
-                    break
-            }
+        repo!.getExchangeRates() { data in
+            XCTAssertEqual(1, data.count)
+            promise.fulfill()
         }
         
         wait(for: [promise], timeout: 1)

@@ -67,29 +67,35 @@ class BaseExchangeRatesRepository: ObservableObject {
 
 extension BaseExchangeRatesRepository: ExchangeRatesRepository {    
    
-    func getExchangeRates(onResult: @escaping (Result<[ExchangeRate], Error>) -> ()) {
+    func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ()) {
         let pairs: [String] = trackedPairs.map { pair in
             return "\(pair.baseCurrency)\(pair.counterCurrency)"
         }
         
         dataSource.fetchExchangeRates(currencyPairs: pairs) { result in
+            
+            var newExchangeRates = [ExchangeRate]()
+            for index in 0..<pairs.count {
+                let rate = ExchangeRate(baseCurrency: self.trackedPairs[index].baseCurrency,
+                                        counterCurrency: self.trackedPairs[index].counterCurrency,
+                                        exchangeRate: nil)
+                newExchangeRates.append(rate)
+            }
+            
             switch result {
                 case let .failure(error):
-                    onResult(.failure(error))
+                    print(error.localizedDescription)
                     break
 
                 case let .success(data):
-                    var newExchangeRates = [ExchangeRate]()
                     for index in 0..<pairs.count {
-                        let rate = ExchangeRate(baseCurrency: self.trackedPairs[index].baseCurrency,
-                                                counterCurrency: self.trackedPairs[index].counterCurrency,
-                                                exchangeRate: data[index])
-                        newExchangeRates.append(rate)
+                        newExchangeRates[index].exchangeRate = data[index]
                     }
-                    onResult(.success(newExchangeRates))
                     print("\(pairs.count) exchange rates retrieved")
                     break;
             }
+            
+            onResult(newExchangeRates)
         }
     }
     

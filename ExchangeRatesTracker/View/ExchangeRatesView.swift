@@ -8,11 +8,16 @@
 
 import SwiftUI
 import Combine
+import MapKit
 
 public struct ExchangeRatesView: View {
     @ObservedObject var viewModel: BaseExchangeRatesViewModel
     let viewProvider: ViewProvider
-    @State private var isNexExchangeRateViewPresented = false
+    let m = ExchangeRateMapView(annotation: RefCityAnnotation(city: "London",
+    exchangeRate: "EUR/CHF = 1.1264",
+    coordinate: CLLocationCoordinate2D(latitude: 34.011286,
+                                       longitude: -116.166868)))
+    @State private var isNewExchangeRateViewPresented = false
 
     init(viewModel: BaseExchangeRatesViewModel, viewProvider: ViewProvider) {
         self.viewModel = viewModel
@@ -23,10 +28,10 @@ public struct ExchangeRatesView: View {
         NavigationView() {
             List() {
                 Section() {
-                    ForEach(viewModel.exchangeRates.map({ (ExchangeRate) -> ExchangeRowPresentationModel in
-                        convert(exchange: ExchangeRate)
-                    })) { exchange in
-                        ExchangeRow(presentationModel: exchange)
+                    ForEach(viewModel.exchangeRates) { exchange in
+                        NavigationLink(destination: self.m) {
+                            ExchangeRow(rowViewModel: exchange)
+                        }
                     }
                     .onDelete(perform: delete)
                 }
@@ -36,13 +41,10 @@ public struct ExchangeRatesView: View {
             .navigationBarItems(trailing: addButton)
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .sheet(isPresented: $isNexExchangeRateViewPresented, onDismiss: {
-            //self.viewModel.fetchExchanges()
+        .sheet(isPresented: $isNewExchangeRateViewPresented, onDismiss: {
+
         }) {
             self.viewProvider.provideNewExchangeRate()
-        }
-        .onAppear {
-            //stop ask 4 updates..
         }
     }
     
@@ -50,27 +52,26 @@ public struct ExchangeRatesView: View {
         guard let index = offsets.first else {
             return
         }
-        let exchange = self.viewModel.exchangeRates.remove(at: index)
-        self.viewModel.untrackExchangeRate(exchange: exchange)
+        self.viewModel.untrackExchangeRate(index: index)
     }
     
     // MARK: - sub views
     
     private var addButton: some View {
         Button(action: {
-           self.isNexExchangeRateViewPresented.toggle()
+           self.isNewExchangeRateViewPresented.toggle()
         }) {
             Text(NSLocalizedString("add_button", comment: ""))
-            //Image(systemName: "plus")
         }
     }
     
     // MARK: - utils
     
-    private func convert(exchange: ExchangeRate) -> ExchangeRowPresentationModel {
-        let ratioText = "\(exchange.baseCurrency)/\(exchange.counterCurrency)"
+    private func convert(exchange: ExchangeRate) -> ExchangeRateDisplayModel {
         let exchangeText = exchange.exchangeRate != nil ? "\(exchange.exchangeRate!)" : "-"
-        return ExchangeRowPresentationModel(currencyRatioText: ratioText, exchangeValue: exchangeText)
+        return ExchangeRateDisplayModel(baseCurrency: exchange.baseCurrency,
+                                        counterCurrency: exchange.counterCurrency,
+                                        exchangeValue: exchangeText)
     }
 }
 
