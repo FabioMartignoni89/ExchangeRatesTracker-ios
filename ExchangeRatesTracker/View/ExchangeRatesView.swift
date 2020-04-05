@@ -12,12 +12,8 @@ import MapKit
 
 public struct ExchangeRatesView: View {
     @ObservedObject var viewModel: BaseExchangeRatesViewModel
-    let viewProvider: ViewProvider
-    let m = ExchangeRateMapView(annotation: RefCityAnnotation(city: "London",
-    exchangeRate: "EUR/CHF = 1.1264",
-    coordinate: CLLocationCoordinate2D(latitude: 34.011286,
-                                       longitude: -116.166868)))
     @State private var isNewExchangeRateViewPresented = false
+    let viewProvider: ViewProvider
 
     init(viewModel: BaseExchangeRatesViewModel, viewProvider: ViewProvider) {
         self.viewModel = viewModel
@@ -29,7 +25,12 @@ public struct ExchangeRatesView: View {
             List() {
                 Section() {
                     ForEach(viewModel.exchangeRates) { exchange in
-                        NavigationLink(destination: self.m) {
+                        NavigationLink(destination:
+                            // Without a lazy view SwiftUI preloads every children view in advance
+                            LazyView(self.viewProvider.provideExchangeRateMap(
+                                    baseCurrency: exchange.baseCurrency,
+                                    counterCurrency: exchange.counterCurrency))
+                        ) {
                             ExchangeRow(rowViewModel: exchange)
                         }
                     }
@@ -55,7 +56,7 @@ public struct ExchangeRatesView: View {
         self.viewModel.untrackExchangeRate(index: index)
     }
     
-    // MARK: - sub views
+    // MARK: -
     
     private var addButton: some View {
         Button(action: {
@@ -63,15 +64,6 @@ public struct ExchangeRatesView: View {
         }) {
             Text(NSLocalizedString("add_button", comment: ""))
         }
-    }
-    
-    // MARK: - utils
-    
-    private func convert(exchange: ExchangeRate) -> ExchangeRateDisplayModel {
-        let exchangeText = exchange.exchangeRate != nil ? "\(exchange.exchangeRate!)" : "-"
-        return ExchangeRateDisplayModel(baseCurrency: exchange.baseCurrency,
-                                        counterCurrency: exchange.counterCurrency,
-                                        exchangeValue: exchangeText)
     }
 }
 

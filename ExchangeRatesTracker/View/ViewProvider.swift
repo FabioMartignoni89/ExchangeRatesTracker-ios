@@ -13,10 +13,12 @@ protocol ViewProvider {
  
     func provideExchangeRates() -> ExchangeRatesView
     func provideNewExchangeRate() -> NewExchangeRateView
+    func provideExchangeRateMap(baseCurrency: String, counterCurrency: String) -> ExchangeRateMapView
 }
 
 class BaseViewProvider {
 
+    // the app single instance of ExchangeRatesRepository
     let exchangeRatesRepository: ExchangeRatesRepository
     
     init() {
@@ -37,5 +39,12 @@ extension BaseViewProvider: ViewProvider {
     func provideNewExchangeRate() -> NewExchangeRateView {
         let viewModel = BaseNewExchangeRateViewModel(repository: exchangeRatesRepository)
         return NewExchangeRateView(viewModel: viewModel)
+    }
+    
+    func provideExchangeRateMap(baseCurrency: String, counterCurrency: String) -> ExchangeRateMapView {
+        let viewModel = BaseExchangeRateMapViewModel(repository: exchangeRatesRepository,
+                                                     baseCurrency: baseCurrency,
+                                                     counterCurrency: counterCurrency)
+        return ExchangeRateMapView(viewModel: viewModel)
     }
 }

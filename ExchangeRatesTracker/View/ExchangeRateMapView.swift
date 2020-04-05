@@ -10,70 +10,87 @@ import SwiftUI
 import MapKit
 
 struct ExchangeRateMapView: UIViewRepresentable {
-    let annotation: RefCityAnnotation
+    @ObservedObject var viewModel: BaseExchangeRateMapViewModel
+    
+    let mapDelegate = ExchangeRateMapDelegate()
+    
+    init(viewModel: BaseExchangeRateMapViewModel) {
+        self.viewModel = viewModel
+    }
     
     func makeUIView(context: Context) -> MKMapView {
         MKMapView(frame: .zero)
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        let span = MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0)
-        let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
-        uiView.setRegion(region, animated: true)
-        uiView.addAnnotation(annotation)
-        uiView.delegate = annotation
+        if let annotation = viewModel.mapAnnotation {
+            
+            let span = MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0)
+            let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
+            uiView.setRegion(region, animated: true)
+            
+            uiView.addAnnotation(annotation)
+            uiView.delegate = mapDelegate
+        }
     }
 }
 
 struct ExchangeRateMapView_Previews: PreviewProvider {
     static var previews: some View {
-        ExchangeRateMapView(annotation:
-            RefCityAnnotation(city: "London",
-                              exchangeRate: "EUR/CHF = 1.1264",
-                    coordinate: CLLocationCoordinate2D(latitude: 34.011286,
-                                                       longitude: -116.166868))
-        )
+        ExchangeRateMapView(viewModel: getPreviewViewModel())
+    }
+    
+    private static func getPreviewViewModel() -> BaseExchangeRateMapViewModel {
+        let repository = MockExchangeRatesRepository()
+        let viewModel = BaseExchangeRateMapViewModel(repository: repository,
+                                                     baseCurrency: "EUR",
+                                                     counterCurrency: "CHF")
+        return viewModel
     }
 }
 
-class RefCityAnnotation: NSObject, MKAnnotation, MKMapViewDelegate {
+class ExchangeRateMapDelegate: NSObject, MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+      guard let annotation = annotation as? RefCityAnnotation else {
+        return nil
+      }
+      let identifier = "ref_city"
+      var view: MKMarkerAnnotationView
+
+      if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView {
+        dequeuedView.annotation = annotation
+        view = dequeuedView
+      }
+      else {
+        view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+        view.canShowCallout = true
+        view.calloutOffset = CGPoint(x: -5, y: 5)
+          view.rightCalloutAccessoryView = UIButton(type: .system)
+      }
+      return view
+    }
+}
+
+class RefCityAnnotation: NSObject, MKAnnotation, ObservableObject {
   let title: String?
-  let exchangeRate: String?
+  var exchangeRate: String?
   let coordinate: CLLocationCoordinate2D
 
   init(
-    city: String?,
-    exchangeRate: String?,
-    coordinate: CLLocationCoordinate2D
+    city: String,
+    exchangeRate: String,
+    latitude: Double,
+    longitude: Double
   ) {
     self.title = city
     self.exchangeRate = exchangeRate
-    self.coordinate = coordinate
+    self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 
     super.init()
   }
 
   var subtitle: String? {
     return exchangeRate
-  }
-    
-  func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-    guard let annotation = annotation as? RefCityAnnotation else {
-      return nil
-    }
-    let identifier = "ref_city"
-    var view: MKMarkerAnnotationView
-
-    if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView {
-      dequeuedView.annotation = annotation
-      view = dequeuedView
-    }
-    else {
-      view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-      view.canShowCallout = true
-      view.calloutOffset = CGPoint(x: -5, y: 5)
-        view.rightCalloutAccessoryView = UIButton(type: .system)
-    }
-    return view
   }
 }
