@@ -116,7 +116,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		E51BEF4D242E653800B4BE65 /* ExchangeRatesTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeRatesTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E51BEF4D242E653800B4BE65 /* ERT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ERT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E51BEF50242E653800B4BE65 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E51BEF52242E653800B4BE65 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E51BEF54242E653800B4BE65 /* ExchangeRatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeRatesView.swift; sourceTree = "<group>"; };
@@ -199,7 +199,7 @@
 		E51BEF4E242E653800B4BE65 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E51BEF4D242E653800B4BE65 /* ExchangeRatesTracker.app */,
+				E51BEF4D242E653800B4BE65 /* ERT.app */,
 				E51BEF63242E653D00B4BE65 /* ExchangeRatesTrackerTests.xctest */,
 				E51BEF6E242E653D00B4BE65 /* ExchangeRatesTrackerUITests.xctest */,
 			);
@@ -380,7 +380,7 @@
 			);
 			name = ExchangeRatesTracker;
 			productName = ExchangeRatesTracker;
-			productReference = E51BEF4D242E653800B4BE65 /* ExchangeRatesTracker.app */;
+			productReference = E51BEF4D242E653800B4BE65 /* ERT.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E51BEF62242E653D00B4BE65 /* ExchangeRatesTrackerTests */ = {
@@ -752,7 +752,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.fabiomartignoni.ExchangeRatesTracker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ERT;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -773,7 +773,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = it.fabiomartignoni.ExchangeRatesTracker;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = ERT;
 				PROVISIONING_PROFILE_SPECIFIER = "WildCard AppStore";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
