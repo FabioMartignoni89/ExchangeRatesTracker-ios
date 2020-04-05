@@ -65,7 +65,7 @@ class BaseExchangeRatesRepository: ObservableObject {
     }
 }
 
-extension BaseExchangeRatesRepository: ExchangeRatesRepository {    
+extension BaseExchangeRatesRepository: ExchangeRatesRepository {
    
     func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ()) {
         let pairs: [String] = trackedPairs.map { pair in
@@ -136,4 +136,7 @@ extension BaseExchangeRatesRepository: ExchangeRatesRepository {
         print("\(base)/\(counter) untracked")
     }
     
+    func getRefCity(currency: String) -> RefCity? {
+        return dataSource.getRefCity(currency: currency)
+    }
 }

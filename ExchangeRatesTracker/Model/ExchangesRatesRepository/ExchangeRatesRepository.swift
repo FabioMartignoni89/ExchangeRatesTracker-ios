@@ -37,4 +37,12 @@ public protocol ExchangeRatesRepository {
          - counter: the counter currency
      */
     func untrack(base: String, counter: String)
+    
+    /**
+     Get the ref. city for the given currency.
+     - parameters:
+         - currency: the currency
+     - returns: the city name and geolocation info
+     */
+    func getRefCity(currency: String) -> RefCity?
 }

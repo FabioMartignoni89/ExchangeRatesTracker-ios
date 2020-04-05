@@ -9,6 +9,7 @@
 import Foundation
 
 class MockExchangeRatesRepository: ExchangeRatesRepository {
+    
     var exchangeRates: [ExchangeRate] = [ExchangeRate](repeating: ExchangeRate(baseCurrency: "EUR", counterCurrency: "CHF", exchangeRate: 1.21), count: 30)
 
     func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ()) {
@@ -27,4 +28,7 @@ class MockExchangeRatesRepository: ExchangeRatesRepository {
         
     }
     
+    func getRefCity(currency: String) -> RefCity? {
+        return RefCity(name: "London", latitude: 1.0, longitude: 1.0)
+    }
 }

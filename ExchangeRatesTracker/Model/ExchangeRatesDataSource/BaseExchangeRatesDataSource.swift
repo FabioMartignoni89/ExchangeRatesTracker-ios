@@ -34,6 +34,17 @@ public class BaseExchangeRatesDataSource {
 
 extension BaseExchangeRatesDataSource: ExchangeRatesDataSource {
     
+    public func getRefCity(currency: String) -> RefCity? {
+        if let currencyDTO = try? getCurrenciesDTO().worldCurrencies.first(where: { (WorldCurrency) -> Bool in
+            WorldCurrency.currency == currency
+        }) {
+            let cityDTO = currencyDTO.city
+            return RefCity(name: cityDTO.name, latitude: cityDTO.lat, longitude: cityDTO.lon)
+        }
+            
+        return nil
+    }
+    
     public func getCurrencies() throws -> [String] {
         return try getCurrenciesDTO().worldCurrencies.map { currency in
             return currency.currency

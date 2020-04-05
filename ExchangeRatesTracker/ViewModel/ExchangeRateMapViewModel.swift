@@ -27,7 +27,7 @@ final class BaseExchangeRateMapViewModel: ObservableObject {
         self.repository = repository
         self.baseCurrency = baseCurrency
         self.counterCurrency = counterCurrency
-        refCity = getRefCity(currency: baseCurrency)
+        refCity = repository.getRefCity(currency: baseCurrency)
         
         setupAnnotation()
         
@@ -58,10 +58,6 @@ final class BaseExchangeRateMapViewModel: ObservableObject {
         }
     }
     
-    private func getRefCity(currency: String) -> RefCity {
-        return RefCity(name: "London", latitude: 1.0, longitude: 1.0)
-    }
-    
     private func setupAnnotation() {
         if let city = refCity {
             self.mapAnnotation = RefCityAnnotation(city: city.name,
@@ -69,6 +65,9 @@ final class BaseExchangeRateMapViewModel: ObservableObject {
                                                    latitude: city.latitude,
                                                    longitude: city.longitude)
             refreshDisplayRate()
+        }
+        else {
+            print("Ref city not found for currency \(baseCurrency).")
         }
     }
     

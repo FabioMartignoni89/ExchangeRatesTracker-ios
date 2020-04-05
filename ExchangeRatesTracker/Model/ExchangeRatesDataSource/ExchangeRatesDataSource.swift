@@ -23,4 +23,12 @@ public protocol ExchangeRatesDataSource {
         - onResult: the actual exchange rates 
      */
     func fetchExchangeRates(currencyPairs: [String], onResult: @escaping (Result<[Double], Error>) -> ())
+    
+    /**
+     Get the ref. city for the given currency.
+     - parameters:
+         - currency: the currency
+     - returns: the city name and geolocation info
+     */
+    func getRefCity(currency: String) -> RefCity?
 }
