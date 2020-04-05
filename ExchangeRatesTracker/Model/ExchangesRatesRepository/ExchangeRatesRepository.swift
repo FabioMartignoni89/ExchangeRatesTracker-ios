@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 public protocol ExchangeRatesRepository {
     
@@ -14,8 +15,9 @@ public protocol ExchangeRatesRepository {
      Get  the tracked exchanges.
      - returns: an array of exchange rates
      */
-    func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ())
-
+    //func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ())
+    func getExchangeRatesPublisher() -> AnyPublisher<[ExchangeRate], Never>
+    
     /**
      Get  the available currencies.
      - returns: an array of currency codes

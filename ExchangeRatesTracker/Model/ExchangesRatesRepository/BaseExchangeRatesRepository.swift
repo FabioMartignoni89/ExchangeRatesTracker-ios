@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import Combine
 
-class BaseExchangeRatesRepository: ObservableObject {
+class BaseExchangeRatesRepository {
     let dataSource: ExchangeRatesDataSource
     let persistenceService: ExchangeRatesPersistenceService
     private var trackedPairs: [CurrencyPairDTO]
     let refreshInterval = 1
+    
+    private let publisher = CurrentValueSubject<[ExchangeRate], Never>([ExchangeRate]())
     
     init(currenciesDataSource: ExchangeRatesDataSource, exchangeRatesPersistenceService: ExchangeRatesPersistenceService)  {
         self.dataSource = currenciesDataSource
@@ -24,6 +27,44 @@ class BaseExchangeRatesRepository: ObservableObject {
         catch {
             print(error.localizedDescription)
             self.trackedPairs = [CurrencyPairDTO]()
+        }
+        
+        Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshInterval), repeats: true, block: { timer in
+            self.fetchExchangeRates()
+        }).fire()
+    }
+    
+    func fetchExchangeRates() {
+        let pairs: [String] = trackedPairs.map { pair in
+            return "\(pair.baseCurrency)\(pair.counterCurrency)"
+        }
+        
+        dataSource.fetchExchangeRates(currencyPairs: pairs) { result in
+            
+            var newExchangeRates = [ExchangeRate]()
+            for index in 0..<pairs.count {
+                let rate = ExchangeRate(baseCurrency: self.trackedPairs[index].baseCurrency,
+                                        counterCurrency: self.trackedPairs[index].counterCurrency,
+                                        exchangeRate: nil)
+                newExchangeRates.append(rate)
+            }
+            
+            switch result {
+                case let .failure(error):
+                    print(error.localizedDescription)
+                    break
+
+                case let .success(data):
+                    for index in 0..<pairs.count {
+                        newExchangeRates[index].exchangeRate = data[index]
+                    }
+                    print("\(pairs.count) exchange rates retrieved")
+                    break;
+            }
+            
+            DispatchQueue.main.async {
+                self.publisher.send(newExchangeRates)
+            }
         }
     }
     
@@ -66,37 +107,9 @@ class BaseExchangeRatesRepository: ObservableObject {
 }
 
 extension BaseExchangeRatesRepository: ExchangeRatesRepository {
-   
-    func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ()) {
-        let pairs: [String] = trackedPairs.map { pair in
-            return "\(pair.baseCurrency)\(pair.counterCurrency)"
-        }
-        
-        dataSource.fetchExchangeRates(currencyPairs: pairs) { result in
-            
-            var newExchangeRates = [ExchangeRate]()
-            for index in 0..<pairs.count {
-                let rate = ExchangeRate(baseCurrency: self.trackedPairs[index].baseCurrency,
-                                        counterCurrency: self.trackedPairs[index].counterCurrency,
-                                        exchangeRate: nil)
-                newExchangeRates.append(rate)
-            }
-            
-            switch result {
-                case let .failure(error):
-                    print(error.localizedDescription)
-                    break
-
-                case let .success(data):
-                    for index in 0..<pairs.count {
-                        newExchangeRates[index].exchangeRate = data[index]
-                    }
-                    print("\(pairs.count) exchange rates retrieved")
-                    break;
-            }
-            
-            onResult(newExchangeRates)
-        }
+    
+    func getExchangeRatesPublisher() -> AnyPublisher<[ExchangeRate], Never> {
+        return publisher.eraseToAnyPublisher()
     }
     
     func getCurrencies() -> [String] {

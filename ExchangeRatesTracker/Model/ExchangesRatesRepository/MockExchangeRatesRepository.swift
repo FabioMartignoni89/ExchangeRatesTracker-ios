@@ -7,10 +7,26 @@
 //
 
 import Foundation
+import Combine
 
 class MockExchangeRatesRepository: ExchangeRatesRepository {
     
+    private let publisher = PassthroughSubject<[ExchangeRate], Never>()
     var exchangeRates: [ExchangeRate] = [ExchangeRate](repeating: ExchangeRate(baseCurrency: "EUR", counterCurrency: "CHF", exchangeRate: 1.21), count: 30)
+    
+    init() {
+        Timer.scheduledTimer(withTimeInterval: TimeInterval(1), repeats: true, block: { timer in
+            self.getExchangeRates(onResult: { result in
+                self.publisher.send(result)
+            })
+        }).fire()
+    }
+    
+    
+    func getExchangeRatesPublisher() -> AnyPublisher<[ExchangeRate], Never> {
+        return publisher.eraseToAnyPublisher()
+    }
+    
 
     func getExchangeRates(onResult: @escaping ([ExchangeRate]) -> ()) {
         onResult(exchangeRates)

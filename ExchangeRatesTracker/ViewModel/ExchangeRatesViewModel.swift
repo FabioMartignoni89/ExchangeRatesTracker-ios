@@ -19,29 +19,24 @@ final class BaseExchangeRatesViewModel: ObservableObject {
     @Published var exchangeRates = [ExchangeRateDisplayModel]()
     
     private let repository: ExchangeRatesRepository
-    private let refreshInterval = 1
+    private var subscriber: AnyCancellable? = nil
     
     init(repository: ExchangeRatesRepository) {
         self.repository = repository
         
-        Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshInterval), repeats: true, block: { timer in
-            self.fetchExchangeRates()
-        }).fire()
-    }
-    
-    private func fetchExchangeRates() {
-        repository.getExchangeRates() { newExchangeRates in
-            DispatchQueue.main.async {
-                self.exchangeRatesModels = newExchangeRates
+        subscriber = repository
+            .getExchangeRatesPublisher()
+            .sink(receiveValue: { newExchangeRates in
                 
-                if self.exchangeRates.count != self.exchangeRatesModels.count {
-                    self.refreshDisplayRates()
-                }
-                else {
-                    self.refreshDisplayRatesValues()
-                }
+            self.exchangeRatesModels = newExchangeRates
+            
+            if self.exchangeRates.count != self.exchangeRatesModels.count {
+                self.refreshDisplayRates()
             }
-        }
+            else {
+                self.refreshDisplayRatesValues()
+            }
+        })
     }
     
     private func refreshDisplayRates() {

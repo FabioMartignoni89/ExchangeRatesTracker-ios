@@ -23,6 +23,8 @@ final class BaseExchangeRateMapViewModel: ObservableObject {
     var refCity: RefCity?
     @Published var mapAnnotation: RefCityAnnotation?
     
+    private var subscriber: AnyCancellable? = nil
+    
     init(repository: ExchangeRatesRepository, baseCurrency: String, counterCurrency: String) {
         self.repository = repository
         self.baseCurrency = baseCurrency
@@ -31,31 +33,26 @@ final class BaseExchangeRateMapViewModel: ObservableObject {
         
         setupAnnotation()
         
-        Timer.scheduledTimer(withTimeInterval: TimeInterval(refreshInterval), repeats: true, block: { timer in
-            self.fetchExchangeRates()
-        }).fire()
-    }
-    
-    private func fetchExchangeRates() {
-        repository.getExchangeRates() { newExchangeRates in
-            DispatchQueue.main.async {
-                let match = newExchangeRates.first() { newRate -> Bool in
-                    return newRate.baseCurrency == self.baseCurrency &&
-                        newRate.counterCurrency == self.counterCurrency
-                }
+        subscriber = repository
+            .getExchangeRatesPublisher()
+            .sink(receiveValue: { newExchangeRates in
                 
-                if match != nil {
-                    self.exchangeRate = match!.exchangeRate
+            let match = newExchangeRates.first() { newRate -> Bool in
+                return newRate.baseCurrency == self.baseCurrency &&
+                    newRate.counterCurrency == self.counterCurrency
+            }
+            
+            if match != nil {
+                self.exchangeRate = match!.exchangeRate
 
-                    if self.mapAnnotation == nil {
-                        self.setupAnnotation()
-                    }
-                    else {
-                        self.refreshDisplayRate()
-                    }
+                if self.mapAnnotation == nil {
+                    self.setupAnnotation()
+                }
+                else {
+                    self.refreshDisplayRate()
                 }
             }
-        }
+        })
     }
     
     private func setupAnnotation() {
