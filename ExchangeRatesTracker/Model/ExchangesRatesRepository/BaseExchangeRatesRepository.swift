@@ -35,6 +35,10 @@ class BaseExchangeRatesRepository {
     }
     
     func fetchExchangeRates() {
+        let trackedPairs = self.trackedPairs.map { pair -> CurrencyPairDTO in
+            return CurrencyPairDTO(baseCurrency: pair.baseCurrency, counterCurrency: pair.counterCurrency)
+        }
+        
         let pairs: [String] = trackedPairs.map { pair in
             return "\(pair.baseCurrency)\(pair.counterCurrency)"
         }
@@ -43,8 +47,8 @@ class BaseExchangeRatesRepository {
             
             var newExchangeRates = [ExchangeRate]()
             for index in 0..<pairs.count {
-                let rate = ExchangeRate(baseCurrency: self.trackedPairs[index].baseCurrency,
-                                        counterCurrency: self.trackedPairs[index].counterCurrency,
+                let rate = ExchangeRate(baseCurrency: trackedPairs[index].baseCurrency,
+                                        counterCurrency: trackedPairs[index].counterCurrency,
                                         exchangeRate: nil)
                 newExchangeRates.append(rate)
             }
